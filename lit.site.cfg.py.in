@@ -1,0 +1,11 @@
+import os
+
+config.my_src_root = r"@CMAKE_SOURCE_DIR@"
+config.my_obj_root = r"@CMAKE_BINART_DIR@"
+
+import lit.llvm
+lit.llvm.initialize(lit_config, config)
+
+lit_config.load_config(
+    config, os.path.join(config.my_src_root, "lit.cfg.py")
+)
