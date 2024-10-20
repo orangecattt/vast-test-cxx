@@ -32,7 +32,7 @@ ctest
 
 #### 更改编译命令
 
-lit按照测试用例中注释`// RUN:`指定的命令运行测试，为了更灵活地配置测试命令，其中可以包括可被替换为相应文本的替换符。lit有一些内置替换符，可参考`[text](https://llvm.org/docs/CommandGuide/lit.html)`，也可以通过`lit.cfg.py`中的`config.substitutions.append()`自定义替换规则。其中`%driver`指定编译工具、`%target`指定生成目标、`%output-suffix`指定生成文件的后缀，**你需要将这些替换符指定为vast相关的命令行参数**。
+lit按照测试用例中注释`// RUN:`指定的命令运行测试，为了更灵活地配置测试命令，其中可以包括可被替换为相应文本的替换符。lit有一些内置替换符，可参考[llvm lit](https://llvm.org/docs/CommandGuide/lit.html#substitutions)，也可以通过`lit.cfg.py`中的`config.substitutions.append()`自定义替换规则。其中`%driver`指定编译工具、`%target`指定生成目标、`%output-suffix`指定生成文件的后缀，**你需要将这些替换符指定为vast相关的命令行参数**。
 
 #### 更改测试命令
 
