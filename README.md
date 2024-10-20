@@ -13,7 +13,7 @@
 本测试集由cmake配置测试环境并启动测试：
 ```bash
 mkdir build && cd build
-cmake .. [-DTESTCASE=test1[;test2[;test3...]]]
+cmake .. [-DTESTCASE="test1[;test2[;test3...]]"]
 ctest
 ```
 测试结果可在`build/Testing/Temporary/LastTest.log`中查看
