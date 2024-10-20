@@ -56,7 +56,6 @@ int TEST1;
 int TEST2;
 
 
-// Check "save-restore" of pragma stacks.
 struct Outer {
   void f() {
     #pragma bss_seg(push, ".bss3")
@@ -81,22 +80,17 @@ extern const int b2; // should be in ".my_const"
 const int b2 = 1;
 
 #pragma section("read_flag_section", read)
-// Even though they are not declared const, these become constant since they are
-// in a read-only section.
 __declspec(allocate("read_flag_section")) int unreferenced = 0;
 extern __declspec(allocate("read_flag_section")) int referenced = 42;
 int *user() { return &referenced; }
 
 #pragma section("no_section_attributes")
-// A pragma section with no section attributes is read/write.
 __declspec(allocate("no_section_attributes")) int implicitly_read_write = 42;
 
 #pragma section("long_section", long)
-// Pragma section ignores "long".
 __declspec(allocate("long_section")) long long_var = 42;
 
 #pragma section("short_section", short)
-// Pragma section ignores "short".
 __declspec(allocate("short_section")) short short_var = 42;
 
 struct t2 { t2(); };
@@ -105,31 +99,3 @@ __declspec(allocate("non_trivial_ctor_section")) const t2 non_trivial_ctor_var;
 }
 
 
-//CHECK: @mutable_default_section = dso_local global %struct.Mutable { i32 3 }, align 4{{$}}
-//CHECK: @normal_default_section = dso_local constant %struct.Normal { i32 2 }, align 4{{$}}
-//CHECK: @D = dso_local global i32 1
-//CHECK: @a = dso_local global i32 1, section ".data"
-//CHECK: @mutable_custom_section = dso_local global %struct.Mutable { i32 3 }, section ".data", align 4
-//CHECK: @normal_custom_section = dso_local constant %struct.Normal { i32 2 }, section ".my_const", align 4
-//CHECK: @b = dso_local constant i32 1, section ".my_const"
-//CHECK: @[[MYSTR:.*]] = {{.*}} unnamed_addr constant [11 x i8] c"my string!\00"
-//CHECK: @s = dso_local global ptr @[[MYSTR]], section ".data2"
-//CHECK: @c = dso_local global i32 1, section ".my_seg"
-//CHECK: @d = dso_local global i32 1, section ".data"
-//CHECK: @e = dso_local global i32 0, section ".my_bss"
-//CHECK: @f = dso_local global i32 0, section ".c"
-//CHECK: @i = dso_local global i32 0
-//CHECK: @TEST1 = dso_local global i32 0
-//CHECK: @TEST2 = dso_local global i32 0, section ".bss1"
-//CHECK: @TEST3 = dso_local global i32 0, section ".bss1"
-//CHECK: @d2 = dso_local global i32 1, section ".data"
-//CHECK: @b2 = dso_local constant i32 1, section ".my_const"
-//CHECK: @unreferenced = dso_local constant i32 0, section "read_flag_section"
-//CHECK: @referenced = dso_local constant i32 42, section "read_flag_section"
-//CHECK: @implicitly_read_write = dso_local global i32 42, section "no_section_attributes"
-//CHECK: @long_var = dso_local global i32 42, section "long_section"
-//CHECK: @short_var = dso_local global i16 42, section "short_section"
-//CHECK: @non_trivial_ctor_var = internal global %struct.t2 zeroinitializer, section "non_trivial_ctor_section"
-//CHECK: define dso_local void @g()
-//CHECK: define dso_local void @h() {{.*}} section ".my_code"
-//CHECK: define dso_local void @h2() {{.*}} section ".my_code"

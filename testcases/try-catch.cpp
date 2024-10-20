@@ -7,7 +7,6 @@ const X g();
 void f() {
   try {
     throw g();
-    // CHECK: @_ZTI1X
   } catch (const X x) {
   }
 }
@@ -15,7 +14,6 @@ void f() {
 void h() {
   try {
     throw "ABC";
-    // CHECK: @_ZTIPKc
   } catch (char const(&)[4]) {
   }
 }

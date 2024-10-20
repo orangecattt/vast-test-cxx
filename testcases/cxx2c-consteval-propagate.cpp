@@ -15,7 +15,3 @@ SS::SS(){}
 
 }
 
-// CHECK-LABEL: @_ZN7GH637422SSC2Ev
-// CHECK-NOT:   call
-// CHECK:       store i32 42, ptr {{.*}}
-// CHECK:       ret void

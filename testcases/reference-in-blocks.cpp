@@ -24,16 +24,13 @@ class A {
 void A::F()
     {
 	__block A &tlc = *this;
-	// crashed in code gen
         ^{ tlc.S(); }();
     }
 
 int main() {
 
-        // works
         void (^bl)(range<int> ) = ^(range<int> i){printf("Hello Blocks %d\n", i.get()); };
 
-        //crashes in godegen?
         void (^bl2)(range<int>& ) = ^(range<int>& i){printf("Hello Blocks %d\n", i.get()); };
 
 	A *a = new A;

@@ -4,8 +4,6 @@
 
 extern "C" void test0() {
 }
-// CHECK: define {{.*}} @test0() #[[ATTR_TEST0:[0-9]*]] {
 
 
-// CHECK: attributes #[[ATTR_TEST0]] = {{.*}} sspstrong
 

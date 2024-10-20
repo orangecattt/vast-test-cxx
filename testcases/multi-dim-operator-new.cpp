@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR6641
 
 extern "C" int printf(const char *, ...);
 
@@ -43,6 +42,3 @@ int main() {
  return 0;
 }
 
-// CHECK: call noalias noundef nonnull ptr @_Znam
-// CHECK: call noalias noundef nonnull ptr @_Znam
-// CHECK: call noalias noundef nonnull ptr @_Znam

@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR1378
 
 typedef float v4sf __attribute__((vector_size(16)));
 

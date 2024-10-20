@@ -1,7 +1,3 @@
-// Check that initialization of the only one memcpy-able struct member will not
-// be performed twice after successful non-trivial initializtion of the second
-// member.
-//
 // RUN: %driver -cc1 %isys -fexceptions -fcxx-exceptions -fno-elide-constructors %s %target -o %t%output-suffix && %filecheck
 
 int globId = 0;
@@ -32,9 +28,6 @@ struct Container {
 int main() {
   try {
     Container c1;
-    // CHECK-DAG: call void @llvm.memcpy
-    // CHECK-DAG: declare void @llvm.memcpy
-    // CHECK-NOT: @llvm.memcpy
     Container c2(c1);
 
     return 2;

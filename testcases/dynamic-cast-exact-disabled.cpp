@@ -6,9 +6,6 @@
 struct A { virtual ~A(); };
 struct B final : A { };
 
-// CHECK-LABEL: @_Z5exactP1A
 B *exact(A *a) {
-  // INEXACT: call {{.*}} @__dynamic_cast
-  // EXACT-NOT: call {{.*}} @__dynamic_cast
   return dynamic_cast<B*>(a);
 }

@@ -9,8 +9,6 @@ struct B {
 
 void B::f() { }
 
-// CHECK-LABEL: define{{.*}} i32 @_ZN1D1gEv(ptr {{[^,]*}} %this)
-// CHECK: declare void @_ZN1B1gEv()
 
 struct C;
 

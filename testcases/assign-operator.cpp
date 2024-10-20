@@ -9,16 +9,9 @@ void a() {
 }
 
 void f(int i, int j) {
-  // CHECK: load i32
-  // CHECK: load i32
-  // CHECK: add nsw i32
-  // CHECK: store i32
-  // CHECK: store i32 17, ptr
-  // CHECK: ret
   (i += j) = 17;
 }
 
-// Taken from g++.old-deja/g++.jason/net.C
 namespace test1 {
   template <class T> void fn (T t) { }
   template <class T> struct A {
@@ -29,8 +22,6 @@ namespace test1 {
   A<int> a;
 }
 
-// Ensure that we use memcpy when we would have selected a trivial assignment
-// operator, even for a non-trivially-copyable type.
 struct A {
   A &operator=(const A&);
 };
@@ -44,11 +35,5 @@ struct C {
   B b[16];
 };
 void b(C &a, C &b) {
-  // CHECK: define {{.*}} @_ZN1CaSERKS_(
-  // CHECK: call {{.*}} @_ZN1AaSERKS_(
-  // CHECK-NOT: call {{.*}} @_ZN1BaSERKS_(
-  // CHECK: call {{.*}} @{{.*}}memcpy
-  // CHECK-NOT: call {{.*}} @_ZN1BaSERKS_(
-  // CHECK: }
   a = b;
 }

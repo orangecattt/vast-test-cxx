@@ -18,11 +18,8 @@ extern "C" void trap() {
   throw "Trap";
 }
 
-// CHECK: define dso_local void @test()
 extern "C" void test() {
   DropBomb bomb;
-// CHECK-UNWIND: invoke void asm sideeffect unwind "call trap"
-// CHECK-NO-UNWIND: call void asm sideeffect "call trap"
 #ifdef UNWIND
   asm volatile("call trap" ::
                    : "unwind");

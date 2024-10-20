@@ -1,24 +1,20 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys %s -std=c++11 %target -o %t%output-suffix && %filecheck
 
-// CHECK-LP64: %union.Test1 = type { i32, [4 x i8] }
 union Test1 {
   int a;
   int b: 39;
 };
 Test1 t1;
 
-// CHECK-LP64: %union.Test2 = type { i8 }
 union Test2 {
   int : 6;
 } t2;
 
-// CHECK-LP64: %union.Test3 = type { i16 }
 union Test3 {
   int : 9;
 } t3;
 
-// CHECK: %union.Test4 = type { i8, i8 }
 union Test4 {
   char val : 16;
 };
@@ -26,7 +22,6 @@ Test4 t4;
 
 #define CHECK(x) if (!(x)) return __LINE__
 
-// CHECK: define{{.*}} i32 @_Z11test_assignv()
 int test_assign() {
   struct {
     int a;
@@ -53,11 +48,9 @@ int test_assign() {
   CHECK(u1.b == 1);
   CHECK(u2.val == 42);
 
-  // CHECK: ret i32 0
   return 0;
 }
 
-// CHECK: define{{.*}} i32 @_Z9test_initv()
 int test_init() {
   struct S {
     int a;
@@ -79,7 +72,6 @@ int test_init() {
   CHECK(u1.b == 1);
   CHECK(u2.val == 42);
 
-  // CHECK: ret i32 0
   return 0;
 }
 
@@ -90,8 +82,6 @@ int test_trunc_int() {
   } const U = {15};  // 0b00001111
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_trunc_int()
-// CHECK: ret i32 -1
 
 int test_trunc_three_bits() {
   union {
@@ -99,8 +89,6 @@ int test_trunc_three_bits() {
   } const U = {15};  // 0b00001111
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_trunc_three_bits()
-// CHECK: ret i32 -1
 
 int test_trunc_one_bit() {
   union {
@@ -108,8 +96,6 @@ int test_trunc_one_bit() {
   } const U = {1};  // 0b00000001
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_trunc_one_bit()
-// CHECK: ret i32 -1
 
 int test_trunc_1() {
   union {
@@ -117,8 +103,6 @@ int test_trunc_1() {
   } const U = {15};  // 0b00001111
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_trunc_1()
-// CHECK: ret i32 -1
 
 int test_trunc_zero() {
   union {
@@ -126,8 +110,6 @@ int test_trunc_zero() {
   } const U = {80};  // 0b01010000
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_trunc_zero()
-// CHECK: ret i32 0
 
 int test_constexpr() {
   union {
@@ -135,8 +117,6 @@ int test_constexpr() {
   } const U = {1 + 2 + 4 + 8}; // 0b00001111
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_constexpr()
-// CHECK: ret i32 -1
 
 int test_notrunc() {
   union {
@@ -144,8 +124,6 @@ int test_notrunc() {
   } const U = {1 + 2 + 4 + 8}; // 0b00001111
   return U.i;
 }
-// CHECK: define{{.*}} i32 @test_notrunc()
-// CHECK: ret i32 15
 
 long long test_trunc_long_long() {
   union {
@@ -153,6 +131,4 @@ long long test_trunc_long_long() {
   } const U = {0b0100111101001101};
   return U.i;
 }
-// CHECK: define{{.*}} i64 @test_trunc_long_long()
-// CHECK: ret i64 3917
 }

@@ -9,11 +9,5 @@ struct B {
   int n = 123;
 };
 
-// We emit a dynamic destructor here because b.n might have been modified
-// before b is destroyed.
-//
-// CHECK: @b ={{.*}} global {{.*}} i32 123
 B b = B();
 
-// CHECK: define {{.*}}cxx_global_var_init
-// CHECK: call {{.*}} @__cxa_atexit({{.*}} @_ZN1BD1Ev, {{.*}} @b

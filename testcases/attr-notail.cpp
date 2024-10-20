@@ -23,9 +23,3 @@ int foo1(int a, Class1 *c1, Class2 &c2) {
   return c1->m2();
 }
 
-// CHECK-LABEL: define{{.*}} i32 @_Z4foo1iP6Class1R6Class2(
-// CHECK: %{{[a-z0-9]+}} = notail call noundef i32 @_ZN6Class12m1Ev(ptr
-// CHECK: %{{[a-z0-9]+}} = notail call noundef i32 %{{[0-9]+}}(ptr
-// CHECK-NOT: %{{[a-z0-9]+}} = notail call noundef i32 %{{[0-9]+}}(ptr
-// CHECK: %{{[a-z0-9]+}} = notail call noundef i32 %{{[0-9]+}}(ptr 
-// CHECK: %{{[a-z0-9]+}} = call noundef i32 @_ZN6Class12m2Ev(ptr

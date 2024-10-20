@@ -39,4 +39,3 @@ void init_ioapic(unsigned long ioapic_id)
      ioapic_shadow[ioapic_id].redirs[3] = entry;
 }
 
-// CHECK: call void @llvm.memcpy

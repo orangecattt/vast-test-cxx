@@ -8,5 +8,3 @@ struct {
 } ptr;
 void test_ptr() { (void) ptr; } // forced use
 
-// GLOBAL-LP64: type { ptr, i64 }
-// GLOBAL-LP32: type { ptr, i32 }

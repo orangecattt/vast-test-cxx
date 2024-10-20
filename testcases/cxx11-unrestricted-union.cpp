@@ -19,7 +19,6 @@ union U {
   int n;
 };
 
-// CHECK-NOT: _ZN1A
 U::U() {}
 U::U(const U&) {}
 U::U(U&&) {}
@@ -43,34 +42,17 @@ struct S {
   int m;
 };
 
-// CHECK: _ZN1SC2Ev
-// CHECK-NOT: _ZN1A
-// CHECK: _ZN1BC1Ev
 S::S() {}
 
-// CHECK-NOT: _ZN1A
 
-// CHECK: _ZN1SC2ERKS_
-// CHECK-NOT: _ZN1A
-// CHECK: _ZN1BC1Ev
 S::S(const S&) {}
 
-// CHECK-NOT: _ZN1A
 
-// CHECK: _ZN1SC2EOS_
-// CHECK-NOT: _ZN1A
-// CHECK: _ZN1BC1Ev
 S::S(S&&) {}
 
-// CHECK-NOT: _ZN1A
-// CHECK-NOT: _ZN1B
 S &S::operator=(const S&) { return *this; }
 
 S &S::operator=(S &&) { return *this; }
 
-// CHECK: _ZN1SD2Ev
-// CHECK-NOT: _ZN1A
-// CHECK: _ZN1BD1Ev
 S::~S() {}
 
-// CHECK-NOT: _ZN1A

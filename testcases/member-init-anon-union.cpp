@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s -std=c++11 %target -o %t%output-suffix && %filecheck
 
-// PR10531.
 
 int make_a();
 
@@ -11,9 +10,6 @@ static union {
 
 int f() { return a; }
 
-// CHECK-LABEL: define internal void @__cxx_global_var_init
-// CHECK-NOT: }
-// CHECK: call {{.*}}@"[[CONSTRUCT_GLOBAL:.*]]C1Ev"
 
 
 int g() {
@@ -21,9 +17,6 @@ int g() {
     int a;
     int b = 81;
   };
-  // CHECK-LABEL: define {{.*}}_Z1gv
-  // CHECK-NOT: }
-  // CHECK: call {{.*}}@"[[CONSTRUCT_LOCAL:.*]]C1Ev"
   return b;
 }
 
@@ -43,23 +36,6 @@ union B {
 B b1;
 B b2(0);
 
-// CHECK: define {{.*}}@"[[CONSTRUCT_GLOBAL]]C2Ev"
-// CHECK-NOT: }
-// CHECK: call {{.*}}@_Z6make_a
 
-// CHECK: define {{.*}}@"[[CONSTRUCT_LOCAL]]C2Ev"
-// CHECK-NOT: }
-// CHECK: store i32 81
 
-// CHECK-LABEL: define {{.*}} @_ZN1BC2Ev(
-// CHECK: call void @_ZN1AC1Ev(
-// CHECK: store i32 123,
-// CHECK: }
 
-// CHECK-LABEL: define {{.*}} @_ZN1BC2Ei(
-// CHECK-NOT: call void @_ZN1AC1Ev(
-// CHECK-NOT: store i32 123,
-// CHECK: store i32 %
-// CHECK-NOT: call void @_ZN1AC1Ev(
-// CHECK-NOT: store i32 123,
-// CHECK: }

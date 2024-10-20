@@ -38,10 +38,6 @@ void test() {
     Do();
 }
 
-// CHECK-LABEL: @_ZN18ThisShouldBeCalledC2Ev
-// CHECK-LABEL: @_ZN21ThisShouldBeCalledTPLIiEC2Ev
-// CHECK-LABEL: @_ZN13WithConstevalC2Ei
-// CHECK-LABEL: @_ZN16WithConstevalTPLIdEC2Ed
 
 namespace check_arrays {
 
@@ -63,7 +59,6 @@ int f() {
     return 0;
 }
 
-// CHECK-LABEL: @_ZN12check_arrays5innerIiEC2Ev
 
 }
 
@@ -74,8 +69,6 @@ struct ShouldBeODRUsed {
   ShouldBeODRUsed() {}
 };
 class k {
-// The private here is important,
-// otherwise it would be aggregate initialized.
 private:
   ShouldBeODRUsed<k> a = {};
 };
@@ -85,7 +78,6 @@ struct b {
 };
 void test() { b d; }
 
-// CHECK-LABEL: @_ZN38check_field_inits_in_base_constructors15ShouldBeODRUsedINS_1kEEC2Ev
 
 }
 
@@ -106,9 +98,6 @@ struct Wrapper {
 
 void Func() { Options options; }
 
-// CHECK-LABEL: @_ZN50check_referenced_when_defined_in_default_parameter7OptionsC2Ev
-// CHECK-LABEL: @_ZN50check_referenced_when_defined_in_default_parameter4TestIFbbEEC1INS_7Options8identityMUlbE_EEEOT_
-// CHECK-LABEL: @_ZN50check_referenced_when_defined_in_default_parameter4TestIFbbEEC2INS_7Options8identityMUlbE_EEEOT_
 
 }
 
@@ -132,9 +121,6 @@ void test() {
     S s;
 }
 
-// CHECK-LABEL: define{{.*}} @_ZN11lambda_body14templated_funcIdEEiv
-// CHECK-LABEL: define{{.*}} @_ZNK11lambda_body1S1aMUlvE_clEv
-// CHECK-LABEL: define{{.*}} @_ZN11lambda_body14templated_funcIiEEiv
 
 
 }

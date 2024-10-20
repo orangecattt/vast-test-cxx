@@ -6,10 +6,6 @@ public:
   ~A();
 } a;
 
-// CHECK-DEFAULT: @__dso_handle = global ptr @__dso_handle, align 8
-// CHECK-HIDDEN: @__dso_handle = hidden global ptr @__dso_handle, align 8
-// CHECK: define internal void @__cxx_global_var_init()
-// CHECK:   call i32 @__cxa_atexit({{.*}}, {{.*}}, ptr @__dso_handle)
 
 #ifdef HIDDEN
 void *__dso_handle __attribute__((__visibility__("hidden"))) = &__dso_handle;

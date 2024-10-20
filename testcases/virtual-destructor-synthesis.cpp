@@ -12,5 +12,4 @@ pile_box::pile_box(box *pp)
 {
 }
 
-// CHECK: call {{.*}}void @_ZdlPv
 

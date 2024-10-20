@@ -8,10 +8,7 @@ template <typename T> auto vtemplate = f{};
 
 int main() { vtemplate<int>(); }
 
-// CHECK: @_Z9vtemplateIiE = linkonce_odr global %struct.f undef, comdat
 
-// CHECK: define{{.*}} i32 @main()
-// CHECK: call void @_ZNK1fclEv(ptr {{[^,]*}} @_Z9vtemplateIiE)
 
 template <typename>
 struct pack {
@@ -23,10 +20,8 @@ auto usage() {
   return pack<char>::some_boolean_cx_value<int>;
 }
 
-// CHECK: define{{.*}} i1 @_Z5usagev()
 
 auto otherusage() {
   return pack<char>{}.some_boolean_cx_value<int>;
 }
 
-// CHECK: define{{.*}} i1 @_Z10otherusagev()

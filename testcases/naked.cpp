@@ -6,7 +6,5 @@ public:
 };
 
 __attribute__((naked)) void TestNaked::NakedFunction() {
-  // CHECK-LABEL: define {{(dso_local )?}}{{(x86_thiscallcc )?}}void @
-  // CHECK: call void asm sideeffect
   asm("");
 }

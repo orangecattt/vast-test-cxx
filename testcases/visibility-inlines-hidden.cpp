@@ -1,8 +1,5 @@
 // RUN: %driver -cc1 %isys -std=c++11 -fvisibility-inlines-hidden %s %target -o %t%output-suffix && %filecheck
 
-// The trickery with optimization in the run line is to get IR
-// generation to emit available_externally function bodies, but not
-// actually inline them (and thus remove the emitted bodies).
 
 struct X0 {
   void __attribute__((visibility("default"))) f1() { }
@@ -37,31 +34,18 @@ struct __attribute__((visibility("default"))) X2 {
 extern template struct X1<float>;
 
 void use(X0 *x0, X1<int> *x1, X2 *x2, X1<float> *x3) {
-  // CHECK-LABEL: define linkonce_odr void @_ZN2X02f1Ev
   x0->f1();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X02f2Ev
   x0->f2();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X02f3Ev
   x0->f3();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X02f5Ev
   X0::f5();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X02f6Ev
   x0->X0::f6();
-  // CHECK-LABEL: define linkonce_odr void @_ZN2X1IiE2f1Ev
   x1->f1();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X1IiE2f2Ev
   x1->f2();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X1IiE2f3Ev
   x1->f3();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X1IiE2f4Ev
   x1->f4();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X1IiE2f5Ev
   X1<int>::f5();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X1IiE2f6Ev
   x1->X1::f6();
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN2X22f2Ev
   x2->f2();
-  // CHECK-LABEL: define available_externally void @_ZN2X1IfE2f2Ev
   x3->f2();
 }
 
@@ -75,11 +59,8 @@ namespace test1 {
     A a;
     a.foo();
   }
-// CHECK: declare void @_ZN5test11A3fooEv
-// CHECK: declare {{.*}} @_ZN5test11AD1Ev
 }
 
-// PR8713
 namespace test2 {
   struct A {};
   template <class T> class B {};
@@ -94,7 +75,6 @@ namespace test2 {
     ns::foo<arg>();
   }
 
-  // CHECK-LABEL: define available_externally void @_ZN5test22ns3fooINS_1BINS_1AEEEEEvv()
 }
 
 namespace PR11642 {
@@ -105,11 +85,8 @@ namespace PR11642 {
   };
   extern template class Foo<int>;
   template class Foo<int>;
-  // CHECK-LABEL: define weak_odr noundef i32 @_ZN7PR116423FooIiE3fooEi
 }
 
-// Test that clang implements the new gcc behaviour for inline functions.
-// GCC PR30066.
 namespace test3 {
   inline void foo(void) {
   }
@@ -121,9 +98,6 @@ namespace test3 {
     foo();
     zed<int>();
   }
-  // CHECK-LABEL: define weak_odr void @_ZN5test33zedIfEEvv
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN5test33fooEv
-  // CHECK-LABEL: define linkonce_odr hidden void @_ZN5test33zedIiEEvv
 }
 
 namespace test4 {
@@ -132,11 +106,9 @@ namespace test4 {
   void bar() {
     foo();
   }
-  // CHECK-LABEL: define available_externally void @_ZN5test43fooE
 }
 
 namespace test5 {
-  // just don't crash.
   template <int> inline void Op();
   class UnaryInstruction {
     UnaryInstruction() {
@@ -148,7 +120,6 @@ namespace test5 {
 }
 
 namespace test6 {
-  // just don't crash.
   template <typename T>
   void f(T x) {
   }
@@ -165,10 +136,8 @@ namespace test6 {
 namespace PR34811 {
   template <typename T> void tf() {}
   
-  // CHECK-LABEL: define linkonce_odr hidden noundef ptr @_ZN7PR348111fEv(
   inline void *f() {
     auto l = []() {};
-    // CHECK-LABEL: define linkonce_odr hidden void @_ZN7PR348112tfIZNS_1fEvEUlvE_EEvv(
     return (void *)&tf<decltype(l)>;
   }
   

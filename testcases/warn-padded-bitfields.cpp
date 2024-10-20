@@ -37,5 +37,4 @@ struct S7 {
   };
 };
 
-// The warnings are emitted when the layout of the structs is computed, so we have to use them.
 void f(S1, S2, S3, S4, S5, S6, S7){}

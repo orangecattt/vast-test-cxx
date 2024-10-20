@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR5697
 namespace PR5697 {
 struct A {
   virtual void f() { }
@@ -7,16 +6,10 @@ struct A {
   A(int);
 };
 
-// A does not have a key function, so the first constructor we emit should
-// cause the vtable to be defined (without assertions.)
-// CHECK: @_ZTVN6PR56971AE = linkonce_odr unnamed_addr addrspace(1) constant
 A::A() { }
 A::A(int) { }
 }
 
-// Make sure that we don't assert when building the vtable for a class
-// template specialization or explicit instantiation with a key
-// function.
 template<typename T>
 struct Base {
   virtual ~Base();

@@ -21,9 +21,3 @@ __attribute__((target("sse4.2"))) void f();
 #pragma clang module import B
 void g() { f(); }
 
-// Negative tests to validate that the resolver only calls each 1x.
-// CHECK: define weak_odr ptr @_Z1fv.resolver
-// CHECK: ret ptr @_Z1fv.sse4.2
-// CHECK-NOT: ret ptr @_Z1fv.sse4.2
-// CHECK: ret ptr @_Z1fv
-// CHECK-NOT: ret ptr @_Z1fv

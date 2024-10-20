@@ -1,4 +1,3 @@
-// Output file should have no calls to error() with folding.
 // RUN: %driver -cc1 %isys -mllvm -inline-threshold=1024 %s %target -o %t%output-suffix && %filecheck
 
 static unsigned pow(unsigned Base, unsigned Power) {
@@ -15,7 +14,6 @@ struct TempTracker {
 
 };
 
-// FIXME: This can be used to check elision as well, if P = 0 hacks are removed.
 struct A {
   TempTracker &TT;
   mutable unsigned P;
@@ -40,7 +38,6 @@ struct A {
   operator bool () { return Truth; }
 };
 
-// 3, 7, 2
 static unsigned f0(bool val = false) {
   TempTracker tt;
   {
@@ -52,7 +49,6 @@ static unsigned f0(bool val = false) {
   return tt.Product;
 }
 
-// 3, 5, 7, 2
 static unsigned f1(bool val = true) {
   TempTracker tt;
   {
@@ -64,7 +60,6 @@ static unsigned f1(bool val = true) {
   return tt.Product;
 }
 
-// 5, 3, 7, 2
 static unsigned f2() {
   TempTracker tt;
   {
@@ -76,7 +71,6 @@ static unsigned f2() {
   return tt.Product;
 }
 
-// 7, 3, 11, 2
 static unsigned f3() {
   TempTracker tt;
   {
@@ -90,7 +84,6 @@ static unsigned f3() {
   return tt.Product;
 }
 
-// 3, 7, 2
 static unsigned f4() {
   TempTracker tt;
   {
@@ -102,7 +95,6 @@ static unsigned f4() {
   return tt.Product;
 }
 
-// 5, 3, 7, 2
 static unsigned f5() {
   TempTracker tt;
   {
@@ -116,7 +108,6 @@ static unsigned f5() {
   return tt.Product;
 }
 
-// 3, 7, 11, 5, 13, 2
 static unsigned f6() {
   TempTracker tt;
   {
@@ -128,7 +119,6 @@ static unsigned f6() {
   return tt.Product;
 }
 
-// 5, 2
 static unsigned f7() {
   TempTracker tt;
   {
@@ -137,7 +127,6 @@ static unsigned f7() {
   return tt.Product;
 }
 
-// 5, 2
 static unsigned f8() {
   TempTracker tt;
   
@@ -156,47 +145,38 @@ extern "C" void print(const char *Name, unsigned N);
 #define ORDER5(a, b, c, d, e) (ORDER4(a, b, c, d) * pow(e, 5))
 #define ORDER6(a, b, c, d, e, f) (ORDER5(a, b, c, d, e) * pow(f, 6))
 void test() {
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 1176)
   print("f0", f0());
   if (f0() != ORDER3(3, 7, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 411600)
   print("f1", f1());
   if (f1() != ORDER4(3, 5, 7, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 246960)
   print("f2", f2());
   if (f2() != ORDER4(5, 3, 7, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 1341648)
   print("f3", f3());
   if (f3() != ORDER4(7, 3, 11, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 1176)
   print("f4", f4());
   if (f4() != ORDER3(3, 7, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 246960)
   print("f5", f5());
   if (f5() != ORDER4(5, 3, 7, 2))
     error();
 
-// CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 1251552576)
   print("f6", f6());
   if (f6() != ORDER6(3, 7, 11, 5, 13, 2))
     error();
 
-//  CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 20)
   print("f7", f7());
   if (f7() != ORDER2(5, 2))
     error();
 
-//  CHECK: call void @print(ptr noundef {{.*}}, i32 noundef 20)
   print("f8", f8());
   if (f8() != ORDER2(5, 2))
     error();

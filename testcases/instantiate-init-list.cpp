@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// expected-no-diagnostics
 
 struct F {
   void (*x)();

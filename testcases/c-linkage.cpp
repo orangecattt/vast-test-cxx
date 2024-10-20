@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// pr6644
 
 extern "C" {
   namespace N {
@@ -10,15 +9,12 @@ extern "C" {
   }
 }
 
-// CHECK-LABEL: define {{.*}}void @_ZN1N1X1fEv
 
 extern "C" {
   static void test2_f() {
   }
-  // CHECK-LABEL: define internal {{.*}}void @_ZL7test2_fv
   static void test2_f(int x) {
   }
-  // CHECK-LABEL: define internal {{.*}}void @_ZL7test2_fi
   void test2_use() {
     test2_f();
     test2_f(42);

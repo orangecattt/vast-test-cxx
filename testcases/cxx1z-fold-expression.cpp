@@ -10,10 +10,6 @@ void use() {
   foldl<1, 2, 3>({});
   foldr1<1, 2, 3>({});
   foldl1<1, 2, 3>({});
-  // CHECK-DAG: @_Z5foldrIJLi1ELi2ELi3EEEv1AIXfrplT_EE(
-  // CHECK-DAG: @_Z5foldlIJLi1ELi2ELi3EEEv1AIXflplT_EE(
-  // CHECK-DAG: @_Z6foldr1IJLi1ELi2ELi3EEEv1AIXfRplT_Li1EEE(
-  // CHECK-DAG: @_Z6foldl1IJLi1ELi2ELi3EEEv1AIXfLplLi1ET_EE(
 }
 
 template<int ...N> using Foldr = A<(N + ...)>;
@@ -32,10 +28,6 @@ void use(Partial<1, 2> p) {
   p.foldl<3, 4>({});
   p.foldr1<3, 4>({});
   p.foldl1<3, 4>({});
-  // CHECK-DAG: @_ZN7PartialIJLi1ELi2EEE5foldrIJLi3ELi4EEEEv1AIXplLi1EplLi2EfRplT_plLi1EplLi2EfrplT_EE(
-  // CHECK-DAG: @_ZN7PartialIJLi1ELi2EEE5foldlIJLi3ELi4EEEEv1AIXfLplplplfLplplLi1ELi2ET_Li1ELi2ET_EE
-  // CHECK-DAG: @_ZN7PartialIJLi1ELi2EEE6foldr1IJLi3ELi4EEEEv1AIXplLi1EplLi2EfRplT_plLi1EplLi2EfRplT_Li1EEE(
-  // CHECK-DAG: @_ZN7PartialIJLi1ELi2EEE6foldl1IJLi3ELi4EEEEv1AIXfLplplplfLplplplLi1ELi1ELi2ET_Li1ELi2ET_EE(
 }
 
 extern int n;

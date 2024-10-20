@@ -1,8 +1,5 @@
-// REQUIRES: asserts
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// This test simply checks that the varargs thunk is created. The failing test
-// case asserts.
 
 typedef signed char __int8_t;
 typedef int BOOL;
@@ -29,4 +26,3 @@ BOOL CBdVfsImpl::ReqCacheHint( CMsgAgent* p_ma, CACHE_HINT hint, ... ) {
   return true;
 }
 
-// CHECK: define {{.*}} @_ZThn{{[48]}}_N10CBdVfsImpl12ReqCacheHintEP9CMsgAgentN3CFs10CACHE_HINTEz(

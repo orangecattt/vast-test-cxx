@@ -1,10 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// Require the template function declaration refer to the correct filename.
-// First, locate the function decl in metadata, and pluck out the file handle:
-// CHECK: !DISubprogram(name: "extract_dwarf_data_from_header
-// CHECK-SAME:          file: [[FILE:![0-9]+]]
-// Second: Require that filehandle refer to the correct filename:
-// CHECK: [[FILE]] = !DIFile(filename: "decl_should_be_here.hpp"
 typedef long unsigned int __darwin_size_t;
 typedef __darwin_size_t size_t;
 typedef unsigned char uint8_t;

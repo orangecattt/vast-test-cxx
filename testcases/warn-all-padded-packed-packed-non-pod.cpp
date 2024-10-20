@@ -1,8 +1,6 @@
 // RUN: %driver -cc1 %isys -Wpadded -Wpacked -Wno-padded-bitfield %s %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys -Wpadded -Wpacked -Wno-padded-bitfield -fclang-abi-compat=15 %s %target -o %t%output-suffix && %filecheck
-// -Wpacked-non-pod itself should not emit the "packed attribute is unnecessary" warnings.
 // RUN: %driver -cc1 %isys -Wpacked-non-pod %s %target -o %t%output-suffix && %filecheck
-// -Wall should not emit the "packed attribute is unnecessary" warnings without -Wpacked.
 // RUN: %driver -cc1 %isys -Wall %s %target -o %t%output-suffix && %filecheck
 
 
@@ -183,7 +181,6 @@ struct S30_use { // abi15-warning {{packed attribute is unnecessary for 'S30_use
 } __attribute__((packed));
 static_assert(sizeof(S30_use) == 3, "");
 
-// The warnings are emitted when the layout of the structs is computed, so we have to use them.
 void f(S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13,
        S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25,
        S26, S27, S28, S29){}

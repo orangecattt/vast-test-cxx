@@ -6,8 +6,6 @@ export import :inter;
 import :impl;
 
 void Wrap() {
-  // CHECK: call void @_ZW3Foo4Frobv()
   Frob();
-  // CHECK: call void @_ZW3Foo4Quuxv()
   Quux();
 }

@@ -6,7 +6,6 @@ void f(bool flag) {
   (flag ? a : b) = 3;
 }
 
-// PR10756
 namespace test0 {
   struct A {
     A(const A &);

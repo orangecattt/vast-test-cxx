@@ -1,6 +1,4 @@
 // RUN: %driver -cc1 %isys %s -fcxx-exceptions -fexceptions %target -o %t%output-suffix && %filecheck
-// expected-no-diagnostics
-// PR7281
 
 class A {
 public:

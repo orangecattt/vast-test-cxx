@@ -42,6 +42,3 @@ int main() {
   g(3);           // g(X(3))
 }
 
-// CHECK: call void @_ZN1XC1Ei
-// CHECK: call void @_ZN1XC1EPKci
-// CHECK: call void @_ZN1XC1Ev

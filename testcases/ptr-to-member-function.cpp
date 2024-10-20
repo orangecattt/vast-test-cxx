@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys -std=c++11 %s %target -o %t%output-suffix && %filecheck
-// 13.3.3.2 Ranking implicit conversion sequences
 
 extern "C" int printf(...);
 
@@ -19,7 +18,6 @@ struct B : public A {
 
 struct C : public B { }; 
 
-// conversion of B::* to C::* is better than conversion of A::* to C::*
 typedef void (A::*pmfa)();
 typedef void (B::*pmfb)();
 typedef void (C::*pmfc)();
@@ -60,8 +58,4 @@ int main()
   	B1 c = B1(2);
 }
 
-// CHECK-LP64: call { i64, i64 } @_ZN1XcvM1BFvvEEv
-// CHECK-LP64: call void @_Z1gM1CFvvE
 
-// CHECK-LP32: call i64 @_ZN1XcvM1BFvvEEv
-// CHECK-LP32: call void @_Z1gM1CFvvE

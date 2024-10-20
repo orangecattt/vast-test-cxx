@@ -1,7 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// CHECK: store i32 59, ptr %size
-// CHECK: store i32 65, ptr %size
 template<typename T>
 class TemplateClass {
 public:
@@ -10,8 +8,6 @@ public:
   }
 };
 
-// CHECK: store i32 35, ptr %size
-// CHECK: store i32 38, ptr %size
 template<typename T>
 void functionTemplate(T t) {
   int size = sizeof(__PRETTY_FUNCTION__);

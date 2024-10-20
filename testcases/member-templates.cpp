@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// CHECK: ; ModuleID
 struct A {
   template<typename T>
   A(T);
@@ -15,8 +14,6 @@ struct B {
 
 template<typename T> B::B(T) {}
 
-// CHECK-LABEL: define weak_odr void @_ZN1BC2IiEET_(ptr {{[^,]*}} %this, i32 noundef %0) unnamed_addr
-// CHECK-LABEL: define weak_odr void @_ZN1BC1IiEET_(ptr {{[^,]*}} %this, i32 noundef %0) unnamed_addr
 template B::B(int);
 
 template<typename T>

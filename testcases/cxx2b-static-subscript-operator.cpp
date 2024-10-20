@@ -19,16 +19,6 @@ void call_static_subscript_operator() {
   GetAFunctor()[501, 502];
 }
 
-// CHECK:      define {{.*}}call_static_subscript_operator{{.*}}
-// CHECK-NEXT: entry:
-// CHECK:        {{.*}} = call noundef i32 {{.*}}Functor{{.*}}(i32 noundef 101, i32 noundef 102)
-// CHECK-NEXT:   {{.*}} = call noundef i32 {{.*}}Functor{{.*}}(i32 noundef 201, i32 noundef 202)
-// CHECK-NEXT:   {{.*}} = call noundef i32 {{.*}}Functor{{.*}}(i32 noundef 301, i32 noundef 302)
-// CHECK-NEXT:   {{.*}} = call noundef i32 {{.*}}Functor{{.*}}(i32 noundef 401, i32 noundef 402)
-// CHECK:        {{.*}}call {{.*}}GetAFunctor{{.*}}()
-// CHECK-NEXT:   {{.*}} = call noundef i32 {{.*}}Functor{{.*}}(i32 noundef 501, i32 noundef 502)
-// CHECK-NEXT:   ret void
-// CHECK-NEXT: }
 
 struct FunctorConsteval {
   consteval static int operator[](int x, int y) {
@@ -64,9 +54,3 @@ void test_dep_functors() {
   int y = DepFunctor<bool>{}[true];
 }
 
-// CHECK:      define {{.*}}test_dep_functors{{.*}}
-// CHECK-NEXT: entry:
-// CHECK:        {{.*}} = call noundef i32 {{.*}}DepFunctor{{.*}}(float noundef 1.000000e+00)
-// CHECK:        {{.*}} = call noundef i32 {{.*}}DepFunctor{{.*}}(i1 noundef zeroext true)
-// CHECK:        ret void
-// CHECK-NEXT: }

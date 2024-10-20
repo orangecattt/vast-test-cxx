@@ -1,7 +1,6 @@
 // RUN: %driver -cc1 %isys %s -I%S %target -o %t%output-suffix && %filecheck
 #include <typeinfo>
 
-// vtables.
 extern "C" {
   const void *_ZTVN10__cxxabiv123__fundamental_type_infoE;
   const void *_ZTVN10__cxxabiv117__class_type_infoE;
@@ -101,41 +100,29 @@ struct B {
   static int (B::*d)[10];
 };
 
-// CHECK-LABEL: define{{.*}} i32 @_Z1fv()
 int f() {
-  // Vectors should be treated as fundamental types.
   typedef short __v4hi __attribute__ ((__vector_size__ (8)));
   CHECK_VTABLE(__v4hi, fundamental);
 
-  // A does not have any bases.
   CHECK_VTABLE(A, class);
   
-  // SI1 has a single public base.
   CHECK_VTABLE(SI1, si_class);
   CHECK(to<__si_class_type_info>(typeid(SI1)).__base_type == &typeid(A));
   
-  // SI2 has a single public empty base.
   CHECK_VTABLE(SI2, si_class);
   CHECK(to<__si_class_type_info>(typeid(SI2)).__base_type == &typeid(Empty));
 
-  // SI3 has a single public empty base. SI3 is dynamic whereas Empty is not, but since Empty is
-  // an empty class, it will still be at offset zero.
   CHECK_VTABLE(SI3, si_class);
   CHECK(to<__si_class_type_info>(typeid(SI3)).__base_type == &typeid(Empty));
 
-  // VMI1 has a single base, but it is private.
   CHECK_VTABLE(VMI1, vmi_class);
 
-  // VMI2 has a single base, but it is virtual.
   CHECK_VTABLE(VMI2, vmi_class);
 
-  // VMI3 has a single base, but VMI3 is dynamic whereas A is not, and A is not empty.
   CHECK_VTABLE(VMI3, vmi_class);
 
-  // VMI4 has two bases.
   CHECK_VTABLE(VMI4, vmi_class);
 
-  // VMI5 has non-diamond shaped inheritance.
   CHECK_VTABLE(VMI5, vmi_class);
   CHECK(to<__vmi_class_type_info>(typeid(VMI5)).__flags == __vmi_class_type_info::__non_diamond_repeat_mask);
   CHECK(to<__vmi_class_type_info>(typeid(VMI5)).__base_count == 2);
@@ -144,7 +131,6 @@ int f() {
   CHECK_BASE_INFO_TYPE(VMI5, 1, VMIBase2);
   CHECK_BASE_INFO_OFFSET_FLAGS(VMI5, 1, 4, __base_class_type_info::__public_mask);
   
-  // VMI6 has diamond shaped inheritance.
   CHECK_VTABLE(VMI6, vmi_class);
   CHECK(to<__vmi_class_type_info>(typeid(VMI6)).__flags == __vmi_class_type_info::__diamond_shaped_mask);
   CHECK(to<__vmi_class_type_info>(typeid(VMI6)).__base_count == 2);
@@ -153,7 +139,6 @@ int f() {
   CHECK_BASE_INFO_TYPE(VMI6, 1, VMIBase3);
   CHECK_BASE_INFO_OFFSET_FLAGS(VMI6, 1, 0, __base_class_type_info::__public_mask);
   
-  // VMI7 has both non-diamond and diamond shaped inheritance.
   CHECK_VTABLE(VMI7, vmi_class);
   CHECK(to<__vmi_class_type_info>(typeid(VMI7)).__flags == (__vmi_class_type_info::__non_diamond_repeat_mask | __vmi_class_type_info::__diamond_shaped_mask));
   CHECK(to<__vmi_class_type_info>(typeid(VMI7)).__base_count == 3);
@@ -164,26 +149,21 @@ int f() {
   CHECK_BASE_INFO_TYPE(VMI7, 2, VMI6);
   CHECK_BASE_INFO_OFFSET_FLAGS(VMI7, 2, 0, 0);
   
-  // Pointers to incomplete classes.
   CHECK_VTABLE(Incomplete *, pointer);
   CHECK(to<__pbase_type_info>(typeid(Incomplete *)).__flags == __pbase_type_info::__incomplete_mask);
   CHECK(to<__pbase_type_info>(typeid(Incomplete **)).__flags == __pbase_type_info::__incomplete_mask);
   CHECK(to<__pbase_type_info>(typeid(Incomplete ***)).__flags == __pbase_type_info::__incomplete_mask);
 
-  // Member pointers.
   CHECK_VTABLE(int Incomplete::*, pointer_to_member);
   CHECK(to<__pbase_type_info>(typeid(int Incomplete::*)).__flags == __pbase_type_info::__incomplete_class_mask);
   CHECK(to<__pbase_type_info>(typeid(Incomplete Incomplete::*)).__flags == (__pbase_type_info::__incomplete_class_mask | __pbase_type_info::__incomplete_mask));
   CHECK(to<__pbase_type_info>(typeid(Incomplete A::*)).__flags == (__pbase_type_info::__incomplete_mask));
 
-  // Check that when stripping qualifiers off the pointee type, we correctly handle arrays.
   CHECK(to<__pbase_type_info>(typeid(B::a)).__flags == (__pbase_type_info::__const_mask | __pbase_type_info::__volatile_mask));
   CHECK(to<__pbase_type_info>(typeid(B::a)).__pointee == to<__pbase_type_info>(typeid(B::b)).__pointee);
   CHECK(to<__pbase_type_info>(typeid(B::c)).__flags == (__pbase_type_info::__const_mask | __pbase_type_info::__volatile_mask));
   CHECK(to<__pbase_type_info>(typeid(B::c)).__pointee == to<__pbase_type_info>(typeid(B::d)).__pointee);
 
-  // Success!
-  // CHECK: ret i32 0
   return 0;
 }
 

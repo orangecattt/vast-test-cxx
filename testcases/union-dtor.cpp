@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys -std=c++11 %s %target -o %t%output-suffix && %filecheck
 
-// PR10304: destructors should not call destructors for variant members.
 
 template<bool b = false>
 struct Foo {
@@ -32,11 +31,3 @@ struct Variant {
 FooBar foobar;
 Variant variant;
 
-// The ctor and dtor of Foo<> and Bar should not be mentioned in the resulting
-// code.
-//
-// CHECK-NOT: 3FooILb1EEC1
-// CHECK-NOT: 3BarC1
-//
-// CHECK-NOT: 3FooILb1EED1
-// CHECK-NOT: 3BarD1

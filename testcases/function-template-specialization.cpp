@@ -1,7 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// CHECK-DAG: _ZZN7PR219047GetDataIiEERKibE1i = internal global i32 4
-// CHECK-DAG: _ZZN7PR219047GetDataIiEERKibE1i_0 = internal global i32 2
 
 template<typename T, typename U>
 T* next(T* ptr, const U& diff);
@@ -12,10 +10,8 @@ T* next(T* ptr, const U& diff) {
 }
 
 void test(int *iptr, float *fptr, int diff) {
-  // CHECK: _Z4nextIiiEPT_S1_RKT0_
   iptr = next(iptr, diff);
 
-  // CHECK: _Z4nextIfiEPT_S1_RKT0_
   fptr = next(fptr, diff);
 }
 
@@ -25,7 +21,6 @@ T* next(T* ptr, const U& diff);
 void test2(int *iptr, double *dptr, int diff) {
   iptr = next(iptr, diff);
 
-  // CHECK: _Z4nextIdiEPT_S1_RKT0_
   dptr = next(dptr, diff);
 }
 

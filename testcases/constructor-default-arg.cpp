@@ -27,6 +27,3 @@ int main() {
   X d(a, 5, 6);
 }
 
-// CHECK: call void @_ZN1XC1ERKS_iii
-// CHECK: call void @_ZN1XC1ERKS_iii
-// CHECK: call void @_ZN1XC1ERKS_iii

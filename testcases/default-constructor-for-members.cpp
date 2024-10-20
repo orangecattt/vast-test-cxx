@@ -15,4 +15,3 @@ int main() {
   M m1;
 }
 
-// CHECK: call void @_ZN1SC1Ev

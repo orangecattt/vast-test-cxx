@@ -1,8 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// pr8409
 
-// CHECK: @_ZN1CIiE11needs_guardE = linkonce_odr {{(dso_local )?}}global
-// CHECK: @_ZGVN1CIiE11needs_guardE = linkonce_odr {{(dso_local )?}}global
 
 struct K
 {

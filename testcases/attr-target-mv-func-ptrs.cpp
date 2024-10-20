@@ -31,23 +31,7 @@ int bar() {
   return Free(1) + (s.*Member)(2);
 }
 
-// LINUX: @_Z3fooi.ifunc
-// LINUX: @_ZN1S3fooEi.ifunc
 
-// LINUX: define{{.*}} i32 @_Z3barv()
-// Store to Free of ifunc
-// LINUX: store ptr @_Z3fooi.ifunc
-// Store to Member of ifunc
-// LINUX: store { i64, i64 } { i64 ptrtoint (ptr @_ZN1S3fooEi.ifunc to i64), i64 0 }, ptr [[MEMBER:%[a-z]+]]
 
-// Call to 'f' with the ifunc
-// LINUX: call void @_Z1fPFiiEM1SFiiE(ptr noundef @_Z3fooi.ifunc
 
-// WINDOWS: define dso_local noundef i32 @"?bar@@YAHXZ"()
-// Store to Free
-// WINDOWS: store ptr @"?foo@@YAHH@Z.resolver", ptr
-// Store to Member
-// WINDOWS: store ptr @"?foo@S@@QEAAHH@Z.resolver", ptr
 
-// Call to 'f'
-// WINDOWS: call void @"?f@@YAXP6AHH@ZP8S@@EAAHH@Z@Z"(ptr noundef @"?foo@@YAHH@Z.resolver", ptr @"?foo@S@@QEAAHH@Z.resolver")

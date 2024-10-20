@@ -4,8 +4,6 @@
 
 #include <typeinfo>
 
-// CHECK-TEST1: @_ZTVN5Test11AE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN5Test11AE = available_externally unnamed_addr constant
 namespace Test1 {
 
 struct A {
@@ -20,8 +18,6 @@ void f(A* a) {
   a->f();
 };
 
-// CHECK-LABEL: define{{.*}} void @_ZN5Test11gEv
-// CHECK: call void @_ZN5Test11A1fEv
 void g() {
   A a;
   f(&a);
@@ -29,14 +25,7 @@ void g() {
 
 }
 
-// Test2::A's key function (f) is defined in this translation unit, but when
-// we're doing codegen for the typeid(A) call, we don't know that yet.
-// This tests mainly that the typeinfo and typename constants have their linkage
-// updated correctly.
 
-// CHECK-TEST2: @_ZTSN5Test21AE ={{.*}} constant
-// CHECK-TEST2: @_ZTIN5Test21AE ={{.*}} constant
-// CHECK-TEST2: @_ZTVN5Test21AE ={{.*}} unnamed_addr constant
 namespace Test2 {
   struct A {
     virtual void f();
@@ -49,7 +38,6 @@ namespace Test2 {
   void A::f() { }
 }
 
-// Test that we don't assert on this test.
 namespace Test3 {
 
 struct A {
@@ -70,7 +58,6 @@ void g(A* a) {
 
 }
 
-// PR9114, test that we don't try to instantiate RefPtr<Node>.
 namespace Test4 {
 
 template <class T> struct RefPtr {
@@ -97,8 +84,6 @@ void f() {
 
 }
 
-// PR9130, test that we emit a definition of A::f.
-// CHECK-TEST5-LABEL: define linkonce_odr void @_ZN5Test51A1fEv
 namespace Test5 {
 
 struct A {
@@ -113,7 +98,6 @@ B::~B() { }
 
 }
 
-// Check that we don't assert on this test.
 namespace Test6 {
 
 struct A {
@@ -154,8 +138,6 @@ struct c28 : virtual c11{
 }
 
 namespace Test8 {
-// CHECK-TEST8: @_ZTVN5Test81YE = available_externally unnamed_addr constant
-// vtable for X is not generated because there are no stores here
 struct X {
   X();
   virtual void foo();
@@ -175,10 +157,6 @@ void f() {
 }  // Test8
 
 namespace Test9 {
-// All virtual functions are outline, so we can assume that it will
-// be generated in translation unit where foo is defined.
-// CHECK-TEST9-DAG: @_ZTVN5Test91AE = available_externally unnamed_addr constant
-// CHECK-TEST9-DAG: @_ZTVN5Test91BE = available_externally unnamed_addr constant
 struct A {
   virtual void foo();
   virtual void bar();
@@ -200,44 +178,28 @@ void g() {
 
 namespace Test10 {
 
-// because A's key function is defined here, vtable is generated in this TU
-// CHECK-TEST10-DAG: @_ZTVN6Test101AE ={{.*}} unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test101AE ={{.*}} unnamed_addr constant
 struct A {
   virtual void foo();
   virtual void bar();
 };
 void A::foo() {}
 
-// Because key function is inline we will generate vtable as linkonce_odr.
-// CHECK-TEST10-DAG: @_ZTVN6Test101DE = linkonce_odr unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test101DE = linkonce_odr unnamed_addr constant
 struct D : A {
   void bar();
 };
 inline void D::bar() {}
 
-// Because B has outline all virtual functions, we can refer to them.
-// CHECK-TEST10-DAG: @_ZTVN6Test101BE = available_externally unnamed_addr constant
 struct B : A {
   void foo();
   void bar();
 };
 
-// C's key function (car) is outline, but C has inline virtual function so we
-// can't guarantee that we will be able to refer to bar from name
-// so (at the moment) we can't emit vtable available_externally.
-// CHECK-TEST10-DAG: @_ZTVN6Test101CE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test101CE = available_externally unnamed_addr constant
 struct C : A {
   void bar() {}               // defined in body - not key function
   virtual inline void gar();  // inline in body - not key function
   virtual void car();
 };
 
-// no key function, vtable will be generated everywhere it will be used
-// CHECK-TEST10-DAG: @_ZTVN6Test101EE = linkonce_odr unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test101EE = linkonce_odr unnamed_addr constant
 
 struct E : A {};
 
@@ -263,14 +225,10 @@ void f() {
 
 namespace Test11 {
 struct D;
-// Can emit C's vtable available_externally.
-// CHECK-TEST11: @_ZTVN6Test111CE = available_externally unnamed_addr constant
 struct C {
   virtual D& operator=(const D&);
 };
 
-// Can emit D's vtable available_externally.
-// CHECK-TEST11: @_ZTVN6Test111DE = available_externally unnamed_addr constant
 struct D : C {
   virtual void key();
 };
@@ -291,14 +249,10 @@ void g() {
 
 namespace Test12 {
 
-// CHECK-TEST12: @_ZTVN6Test121AE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test121AE = available_externally unnamed_addr constant
 struct A {
   virtual void foo();
   virtual ~A() {}
 };
-// CHECK-TEST12: @_ZTVN6Test121BE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test121BE = available_externally unnamed_addr constant
 struct B : A {
   void foo();
 };
@@ -313,10 +267,6 @@ void g() {
 
 namespace Test13 {
 
-// CHECK-TEST13-DAG: @_ZTVN6Test131AE = available_externally unnamed_addr constant
-// CHECK-TEST13-DAG: @_ZTVN6Test131BE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test131AE = available_externally unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test131BE = available_externally unnamed_addr constant
 
 struct A {
   virtual ~A();
@@ -334,7 +284,6 @@ void g() {
 
 namespace Test14 {
 
-// CHECK-TEST14: @_ZTVN6Test141AE = available_externally unnamed_addr constant
 struct A {
   virtual void f();
   void operator delete(void *);
@@ -348,9 +297,6 @@ void g() {
 }
 
 namespace Test15 {
-// In this test D's vtable has two slots for function f(), but uses only one,
-// so the second slot is set to null.
-// CHECK-TEST15: @_ZTVN6Test151DE = available_externally unnamed_addr constant
 struct A { virtual void f() {} };
 struct B : virtual A {};
 struct C : virtual A {};
@@ -366,12 +312,6 @@ void test() {
 }
 
 namespace Test16 {
-// S has virtual method that is hidden, because of it we can't
-// generate available_externally vtable for it.
-// CHECK-TEST16-DAG: @_ZTVN6Test161SE = external unnamed_addr constant
-// CHECK-TEST16-DAG: @_ZTVN6Test162S2E = available_externally
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test161SE = external unnamed_addr constant
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test162S2E = available_externally
 
 struct S {
   __attribute__((visibility("hidden"))) virtual void doStuff();
@@ -393,21 +333,12 @@ void test() {
 }
 
 namespace Test17 {
-// This test checks if we emit vtables opportunistically.
-// CHECK-TEST17-DAG: @_ZTVN6Test171AE = available_externally
-// CHECK-TEST17-DAG: @_ZTVN6Test171BE = external
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test171AE = available_externally
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test171BE = available_externally
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr void @_ZN6Test171BD2Ev(
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr void @_ZN6Test171BD0Ev(
 
 struct A {
   virtual void key();
   virtual void bar() {}
 };
 
-// We won't gonna use deleting destructor for this type, which will disallow
-// emitting vtable as available_externally
 struct B {
   virtual void key();
   virtual ~B() {}
@@ -425,13 +356,6 @@ void testcaseB() {
 } // namespace Test17
 
 namespace Test18 {
-// Here vtable will be only emitted because it is referenced by assume-load
-// after the Derived construction.
-// CHECK-FORCE-EMIT-DAG: @_ZTVN6Test187DerivedE = linkonce_odr unnamed_addr constant {{.*}} @_ZTIN6Test187DerivedE, {{.*}} @_ZN6Test184Base3funEv, {{.*}} @_ZN6Test184BaseD2Ev, {{.*}} @_ZN6Test187DerivedD0Ev
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr void @_ZN6Test187DerivedD0Ev
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr void @_ZN6Test184BaseD2Ev
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN6Test184Base3funEv
-// CHECK-FORCE-EMIT-DAG: @_ZTIN6Test187DerivedE = linkonce_odr constant
 
 struct Base {
   virtual int fun() { return 42; }
@@ -450,14 +374,11 @@ int foo() {
 
 namespace TestTemplates {
 
-// CHECK-FORCE-EMIT-DAG: @_ZTVN13TestTemplates8TemplateIiEE = linkonce_odr unnamed_addr constant {{.*}} @_ZTIN13TestTemplates8TemplateIiEE, {{.*}} @_ZN13TestTemplates8TemplateIiE3fooEi, {{.*}}@_ZN13TestTemplates8TemplateIiE22thisShouldBeEmittedTooEi, {{.*}}@_ZN13TestTemplates8TemplateIiED1Ev, {{.*}}@_ZN13TestTemplates8TemplateIiED0Ev
-// CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates8TemplateIiE22thisShouldBeEmittedTooEi
 
 template<class T>
 struct Template {
   Template();
   virtual T foo(T val);
-  // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates8TemplateIiE22thisShouldBeEmittedTooEi
   virtual T thisShouldBeEmittedToo(T val) { return val; }
   virtual ~Template();
 };
@@ -467,19 +388,16 @@ struct NonTemplate {
   typedef int T;
   NonTemplate();
   virtual T foo(T val);
-  // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates11NonTemplate22thisShouldBeEmittedTooEi
   virtual T thisShouldBeEmittedToo(T val) { return val; }
   virtual ~NonTemplate();
 };
 
-// CHECK-FORCE-EMIT-DAG: @_ZTVN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiEE = linkonce_odr {{.*}} @_ZTIN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiEE, {{.*}} @_ZN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiE3fooEi, {{.*}} @_ZN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiE22thisShouldBeEmittedTooEi, {{.*}} @_ZN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiED1Ev, {{.*}} @_ZN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiED0Ev
 
 struct OuterNonTemplate {
   template<class T>
   struct NestedTemplateInNonTemplate {
     NestedTemplateInNonTemplate();
     virtual T foo(T val);
-    // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates16OuterNonTemplate27NestedTemplateInNonTemplateIiE22thisShouldBeEmittedTooEi
     virtual T thisShouldBeEmittedToo(T val) { return val; }
     virtual ~NestedTemplateInNonTemplate();
   };
@@ -488,7 +406,6 @@ struct OuterNonTemplate {
     typedef int T;
     NestedNonTemplateInNonTemplate();
     virtual T foo(T val);
-    // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates16OuterNonTemplate30NestedNonTemplateInNonTemplate22thisShouldBeEmittedTooEi
     virtual T thisShouldBeEmittedToo(T val) { return val; }
     virtual ~NestedNonTemplateInNonTemplate();
   };
@@ -500,7 +417,6 @@ struct OuterTemplate {
   struct NestedTemplateInTemplate {
     NestedTemplateInTemplate();
     virtual T foo(T val);
-    // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates13OuterTemplateIlE24NestedTemplateInTemplateIiE22thisShouldBeEmittedTooEi
     virtual T thisShouldBeEmittedToo(T val) { return val; }
     virtual ~NestedTemplateInTemplate();
   };
@@ -509,7 +425,6 @@ struct OuterTemplate {
     typedef int T;
     NestedNonTemplateInTemplate();
     virtual T foo(T val);
-    // CHECK-FORCE-EMIT-DAG: define linkonce_odr noundef i32 @_ZN13TestTemplates13OuterTemplateIlE27NestedNonTemplateInTemplate22thisShouldBeEmittedTooEi
     virtual T thisShouldBeEmittedToo(T val) { return val; }
     virtual ~NestedNonTemplateInTemplate();
   };

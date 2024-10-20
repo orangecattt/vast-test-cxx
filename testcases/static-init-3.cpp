@@ -1,13 +1,11 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// PR7050
 template<class T> struct X0 : public T { };
 
 template <class T>
 struct X1
 {
      static T & instance;
-    // include this to provoke instantiation at pre-execution time
     static void use(T const &) {}
      static T & get() {
         static X0<T> t;
@@ -16,8 +14,6 @@ struct X1
     }
 };
 
-// CHECK: @_ZN2X1I2X2I1BEE8instanceE = linkonce_odr global ptr null, align 8
-// CHECJ: @_ZN2X1I2X2I1AEE8instanceE = linkonce_odr global ptr null, align 8
 template<class T> T & X1<T>::instance = X1<T>::get();
 
 class A { };

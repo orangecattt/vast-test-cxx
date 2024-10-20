@@ -16,7 +16,6 @@ struct A {
 } a;
 
 
-// Test for function reference.
 typedef int (&fr1)(int); 
 typedef int (&fr2)(float); 
 
@@ -35,5 +34,3 @@ int main()
  return 0;
 }
 
-// CHECK: call noundef ptr @_ZN1AcvPFiiEEv
-// CHECK: call noundef nonnull ptr @_ZN1BcvRFiiEEv

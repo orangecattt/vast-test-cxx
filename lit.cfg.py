@@ -6,26 +6,26 @@ import lit.formats
 
 from lit.llvm import llvm_config
 
-config.name = "lit-cxxtest"
+config.name = "vast-test-cxx"
 config.test_format = lit.formats.ShTest(True)
-
-config.suffixes = ['.cpp', '.cppm']
-config.excludes = ['Inputs']
 
 config.test_source_root = os.path.join(os.path.dirname(__file__), "testcases")
 config.test_exec_root = config.my_obj_root
+
+config.suffixes = ['.cpp', '.cppm']
+config.excludes = ['Inputs', 'ignore']
 
 # FileCheck command and pattern, %check and %output-suffix used in %FILECHECK so they should defined after %FILECHECK
 config.substitutions.append((r'%filecheck', 'echo \'%check\' > %t.check && FileCheck %t.check --input-file=%t%output-suffix && rm %t.check'))
 config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.}}'))
 
-# config.substitutions.append((r'%driver', 'clang'))
-# config.substitutions.append((r'%target', '-emit-llvm'))
-# config.substitutions.append((r'%output-suffix', '.ll'))
+config.substitutions.append((r'%driver', 'clang'))
+config.substitutions.append((r'%target', '-emit-llvm'))
+config.substitutions.append((r'%output-suffix', '.ll'))
 
-config.substitutions.append((r'%driver', 'vast-front'))
-config.substitutions.append((r'%target', '-vast-emit-mlir=hl'))
-config.substitutions.append((r'%output-suffix', '.hl'))
+# config.substitutions.append((r'%driver', 'vast-front'))
+# config.substitutions.append((r'%target', '-vast-emit-mlir=hl'))
+# config.substitutions.append((r'%output-suffix', '.hl'))
 
 # clang -cc1 is the frontend, clang is the driver. The driver invokes the frontend with options appropriate for your system
 # find clang SYSTEM include search path

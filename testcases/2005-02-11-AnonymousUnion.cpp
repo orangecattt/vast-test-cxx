@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// Test anonymous union with members of the same size.
 int test1(float F) {
   union {
      float G;
@@ -10,7 +9,6 @@ int test1(float F) {
   return i;
 }
 
-// test anonymous union with members of differing size.
 int test2(short F) {
   volatile union {
      short G;
@@ -20,7 +18,6 @@ int test2(short F) {
   return i;
 }
 
-// Make sure that normal unions work.  duh :)
 volatile union U_t {
   short S;
   int i;

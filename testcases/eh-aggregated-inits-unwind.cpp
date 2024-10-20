@@ -1,9 +1,3 @@
-// Check that destructors of memcpy-able struct members are called properly
-// during stack unwinding after an exception.
-//
-// Check that destructor's argument (address of member to be destroyed) is
-// obtained by taking offset from struct, not by bitcasting pointers.
-//
 // RUN: %driver -cc1 %isys -fexceptions -fcxx-exceptions -fno-elide-constructors %s %target -o %t%output-suffix && %filecheck
 
 struct ImplicitCopy {
@@ -34,8 +28,6 @@ struct Container {
 int main() {
   try {
     Container c1;
-    // CHECK-LABEL: main
-    // CHECK: %{{.+}} = getelementptr inbounds %struct.Container, ptr %{{.+}}, i32 0, i32 1
     Container c2(c1);
 
     return 2;

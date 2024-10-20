@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// PR5775
 class Twine {
 public:
   Twine(const char *Str) { }

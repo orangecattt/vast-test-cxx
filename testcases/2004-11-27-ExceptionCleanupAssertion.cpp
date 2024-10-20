@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// This is PR421
 
 struct Strongbad {
     Strongbad(const char *str );

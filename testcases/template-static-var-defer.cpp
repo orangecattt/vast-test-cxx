@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR7415
 class X {
   template <class Dummy> struct COMTypeInfo {
     static const int kIID;

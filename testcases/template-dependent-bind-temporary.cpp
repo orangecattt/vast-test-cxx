@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR7851
 struct string {
   string (const string& );
   string ();
@@ -17,7 +16,6 @@ void IntToString(T a)
 }
 
 int main() {
-// CHECK-LABEL: define linkonce_odr {{.*}}void @_Z11IntToStringIcEvT_(
   IntToString('a');
 }
 

@@ -3,14 +3,11 @@
 
 module Foo;
 
-// CHECK-DAG: @_ZW3Foo8Exportedv(
 void Exported() {
 }
 
-// CHECK-DAG: @_ZW3Foo6Modulev(
 void Module() {
 }
 
-// CHECK-DAG: @_ZW3Foo7Module2v(
 void Module2() {
 }

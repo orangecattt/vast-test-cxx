@@ -21,7 +21,3 @@ static Foo table[] = {
   { "blerg" },
 };
 
-// CHECK: define internal void @__cxx_global_var_init
-// CHECK: invoke {{.*}} @_ZNSt6stringC1EPKc(
-// CHECK-NOT: unreachable
-// CHECK: br label

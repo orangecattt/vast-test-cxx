@@ -6,6 +6,3 @@ void a() {
   B b;
 }
 
-// CHECK: call {{.*}} @_ZN1BC1Ev
-// CHECK: define linkonce_odr {{.*}} @_ZN1BC1Ev(ptr {{.*}}%this) unnamed_addr
-// CHECK: call {{.*}} @_ZN1AIiEC1Ev

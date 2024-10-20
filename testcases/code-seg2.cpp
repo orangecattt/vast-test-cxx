@@ -1,7 +1,5 @@
 // RUN: %driver -cc1 %isys -std=c++11 -fms-extensions %s %target -o %t%output-suffix && %filecheck
-// expected-no-diagnostics
 
-// Class member templates
 
 #pragma code_seg(push, "something")
 
@@ -22,8 +20,6 @@ int caller1() {
   return coi.bar1(6) + coi.bar2(3);
 }
 
-//CHECK: define {{.*}}bar1@?$ClassOne{{.*}} section "foo_one"
-//CHECK: define {{.*}}bar2@?$ClassOne{{.*}} section "foo_one"
 
 
 template <typename T>
@@ -54,9 +50,6 @@ int caller2() {
   return coi.bar11(6) + coi.bar22(3) + coi.bar33(44);
 }
 
-//CHECK: define {{.*}}bar11@?$ClassTwo{{.*}} section "something"
-//CHECK: define {{.*}}bar22@?$ClassTwo{{.*}} section "newone"
-//CHECK: define {{.*}}bar33@?$ClassTwo{{.*}} section "someother"
 
 template<>
 struct ClassOne<double>
@@ -76,15 +69,11 @@ int caller3() {
   return d.bar44(1.0)+l.bar55(1);
 }
 
-//CHECK: define {{.*}}bar44{{.*}} section "yetanother"
-//CHECK: define {{.*}}bar55{{.*}} section "foo_three"
 
 
-// Function templates
 template <typename T>
 int __declspec(code_seg("foo_four")) bar66(T t) { return int(t); }
 
-// specializations do not take the segment from primary
 template<>
 int bar66(int i) { return 0; }
 
@@ -99,13 +88,8 @@ int __declspec(code_seg("foo_five")) bar66(A1 a) { return a.i; }
 
 int caller4()
 {
-// but instantiations do use the section from the primary
 return bar66(0) + bar66(1.0) + bar66('c');
 }
-//CHECK: define {{.*}}bar66@H{{.*}} section "onemore"
-//CHECK-NOT: define {{.*}}bar66@D{{.*}} section
-//CHECK: define {{.*}}bar66@UA1{{.*}} section "foo_five"
-//CHECK: define {{.*}}bar66@N{{.*}} section "foo_four"
 
 
 

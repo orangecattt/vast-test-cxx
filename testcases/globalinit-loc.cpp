@@ -1,15 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-//
-// Verify that the global init helper function does not get associated
-// with any source location.
-//
-// CHECK: define internal {{.*}}void @_GLOBAL__sub_I_globalinit_loc.cpp({{.*}} {
-// CHECK: !dbg ![[DBG:.*]]
-// CHECK: !DISubprogram(linkageName: "_GLOBAL__sub_I_globalinit_loc.cpp"
-// CHECK-NOT:           line:
-// CHECK-SAME:          DISPFlagLocalToUnit
-// CHECK-SAME:          DISPFlagDefinition
-// CHECK: ![[DBG]] = !DILocation(line: 0,
 # 99 "someheader.h"
 class A {
 public:

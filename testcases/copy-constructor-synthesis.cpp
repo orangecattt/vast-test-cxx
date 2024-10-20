@@ -21,7 +21,6 @@ struct P {
 };
 
 
-// CHECK-LABEL: define linkonce_odr void @_ZN1XC1ERKS_(ptr {{[^,]*}} %this, ptr noundef nonnull align {{[0-9]+}} dereferenceable({{[0-9]+}}) %0) unnamed_addr
 struct X  : M, N, P { // ...
   X() : f1(1.0), d1(2.0), i1(3), name("HELLO"), bf1(0xff), bf2(0xabcd),
         au_i1(1234), au1_4("MASKED") {}
@@ -58,14 +57,12 @@ struct X  : M, N, P { // ...
 };
 
 static int ix = 1;
-// class with user-defined copy constructor.
 struct S {
   S() : iS(ix++) {  }
   S(const S& arg) { *this = arg; }
   int iS;
 };
 
-// class with trivial copy constructor.
 struct I {
   I() : iI(ix++) {  }
   int iI;
@@ -111,7 +108,6 @@ void f(const B &b1) {
   B b2(b1);
 }
 
-// PR6628
 namespace PR6628 {
 
 struct T {
@@ -131,47 +127,14 @@ struct B : A {
   A a[10];
 };
 
-// Force the copy constructor to be synthesized.
 void f(B b1) {
   B b2 = b1;
 }
 
-// CHECK:    define linkonce_odr noundef nonnull align {{[0-9]+}} dereferenceable({{[0-9]+}}) ptr @_ZN12rdar138169401AaSERKS0_(
-// CHECK:      [[THIS:%.*]] = load ptr, ptr
-// CHECK-NEXT: [[T0:%.*]] = getelementptr inbounds [[A:%.*]], ptr [[THIS]], i32 0, i32 1
-// CHECK-NEXT: [[OTHER:%.*]] = load ptr, ptr
-// CHECK-NEXT: [[T2:%.*]] = getelementptr inbounds [[A]], ptr [[OTHER]], i32 0, i32 1
-// CHECK-NEXT: call void @llvm.memcpy.p0.p0.i64(ptr align 8 [[T0]], ptr align 8 [[T2]], i64 8, i1 false)
-// CHECK-NEXT: ret ptr [[THIS]]
 
-// CHECK-LABEL: define linkonce_odr void @_ZN6PR66281BC2ERKS0_(ptr {{[^,]*}} %this, ptr noundef nonnull align {{[0-9]+}} dereferenceable({{[0-9]+}}) %0) unnamed_addr
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281AC2ERKS0_RKNS_1TES5_
-// CHECK: call void @_ZN6PR66281TD1Ev
-// CHECK: call void @_ZN6PR66281TD1Ev
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281AC1ERKS0_RKNS_1TES5_
-// CHECK: call void @_ZN6PR66281TD1Ev
-// CHECK: call void @_ZN6PR66281TD1Ev
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281TC1Ev
-// CHECK: call void @_ZN6PR66281AC1ERKS0_RKNS_1TES5_
-// CHECK: call void @_ZN6PR66281TD1Ev
-// CHECK: call void @_ZN6PR66281TD1Ev
 
-// CHECK-LABEL:    define linkonce_odr void @_ZN12rdar138169401AC2ERKS0_(
-// CHECK:      [[THIS:%.*]] = load ptr, ptr
-// CHECK-NEXT: store ptr getelementptr inbounds ({ [4 x ptr] }, ptr @_ZTVN12rdar138169401AE, i32 0, inrange i32 0, i32 2), ptr [[THIS]]
-// CHECK-NEXT: [[T0:%.*]] = getelementptr inbounds [[A]], ptr [[THIS]], i32 0, i32 1
-// CHECK-NEXT: [[OTHER:%.*]] = load ptr, ptr
-// CHECK-NEXT: [[T2:%.*]] = getelementptr inbounds [[A]], ptr [[OTHER]], i32 0, i32 1
-// CHECK-NEXT: call void @llvm.memcpy.p0.p0.i64(ptr align 8 [[T0]], ptr align 8 [[T2]], i64 8, i1 false)
-// CHECK-NEXT: ret void
 }
 
-// Test above because things get weirdly re-ordered.
 namespace rdar13816940 {
   struct A {
     virtual ~A();

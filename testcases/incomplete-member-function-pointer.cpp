@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR7040
 struct fake_tuple;
 struct connection {
     void bar(fake_tuple);

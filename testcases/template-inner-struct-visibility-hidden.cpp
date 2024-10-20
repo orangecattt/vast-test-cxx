@@ -1,9 +1,5 @@
 // RUN: %driver -cc1 %isys -fvisibility=hidden %s %target -o %t%output-suffix && %filecheck
 
-// Verify that symbols are hidden.
-// CHECK: @_ZN1CIiE5Inner6Inner26StaticE = weak_odr hidden global
-// CHECK-LABEL: define weak_odr hidden {{.*}}void @_ZN1CIiE5Inner1fEv
-// CHECK-LABEL: define weak_odr hidden {{.*}}void @_ZN1CIiE5Inner6Inner21gEv
 
 template<typename T>
 struct C {

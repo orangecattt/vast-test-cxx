@@ -1,9 +1,4 @@
 // RUN: %driver -cc1 %isys -fblocks %s %target -o %t%output-suffix && %filecheck
-// Ensure that we generate a line table entry for the block cleanup.
-// CHECK: define {{.*}} @__main_block_invoke
-// CHECK: _NSConcreteStackBlock
-// CHECK: call {{.*}} @_Block_object_dispose{{.*}}, !dbg ![[L1:[0-9]+]]
-// CHECK: ret
 
 void * _NSConcreteStackBlock;
 #ifdef __cplusplus

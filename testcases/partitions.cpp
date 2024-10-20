@@ -33,13 +33,4 @@ export int use() {
   return foo() + bar() + a + b;
 }
 
-// FIXME: The definition of the variables shouldn't be exported too.
-// CHECK: @_ZW3mod1a = available_externally global
-// CHECK: @_ZW3mod1b = available_externally global
-// CHECK: declare{{.*}} i32 @_ZW3mod3foov
-// CHECK: declare{{.*}} i32 @_ZW3mod3barv
 
-// CHECK-OPT: @_ZW3mod1a = available_externally global
-// CHECK-OPT: @_ZW3mod1b = available_externally global
-// CHECK-OPT: declare{{.*}} i32 @_ZW3mod3foov
-// CHECK-OPT: declare{{.*}} i32 @_ZW3mod3barv

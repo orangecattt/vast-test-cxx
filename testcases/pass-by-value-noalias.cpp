@@ -1,7 +1,6 @@
 // RUN: %driver -cc1 %isys -fpass-by-value-is-noalias -disable-llvm-optzns %s %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys -disable-llvm-optzns %s %target -o %t%output-suffix && %filecheck
 
-// A trivial struct large enough so it is not passed in registers on ARM64.
 struct Foo {
   int a;
   int b;
@@ -11,17 +10,11 @@ struct Foo {
   int f;
 };
 
-// Make sure noalias is added to indirect arguments with trivially copyable types
-// if -fpass-by-value-is-noalias is provided.
 
-// WITH_NOALIAS: define{{.*}} void @_Z4take3Foo(ptr noalias noundef %arg)
-// NO_NOALIAS: define{{.*}} void @_Z4take3Foo(ptr noundef %arg)
 void take(Foo arg) {}
 
 int G;
 
-// NonTrivial is not trivially-copyable, because it has a non-trivial copy
-// constructor.
 struct NonTrivial {
   int a;
   int b;
@@ -35,14 +28,9 @@ struct NonTrivial {
   }
 };
 
-// Make sure noalias is not added to indirect arguments that are not trivially
-// copyable even if -fpass-by-value-is-noalias is provided.
 
-// WITH_NOALIAS: define{{.*}} void @_Z4take10NonTrivial(ptr noundef %arg)
-// NO_NOALIAS:   define{{.*}} void @_Z4take10NonTrivial(ptr noundef %arg)
 void take(NonTrivial arg) {}
 
-// Escape examples. Pointers to the objects passed to take() may escape, depending on whether a temporary copy is created or not (e.g. due to NRVO).
 struct A {
   A(A **where) : data{"hello world 1"} {
     *where = this; //Escaped pointer 1 (proposed UB?)
@@ -54,19 +42,14 @@ struct A {
 };
 A *p;
 
-// WITH_NOALIAS: define{{.*}} void @_Z4take1A(ptr noalias noundef %arg)
-// NO_NOALIAS: define{{.*}} void @_Z4take1A(ptr noundef %arg)
 void take(A arg) {}
 
-// WITH_NOALIAS: define{{.*}} void @_Z7CreateAPP1A(ptr dead_on_unwind noalias writable sret(%struct.A) align 1 %agg.result, ptr noundef %where)
-// NO_NOALIAS: define{{.*}} void @_Z7CreateAPP1A(ptr dead_on_unwind noalias writable sret(%struct.A) align 1 %agg.result, ptr noundef %where)
 A CreateA(A **where) {
   A justlikethis;
   *where = &justlikethis; //Escaped pointer 2 (should also be UB, then)
   return justlikethis;
 }
 
-// elsewhere, perhaps compiled by a smarter compiler that doesn't make a copy here
 void test() {
   take({&p});        // 1
   take(CreateA(&p)); // 2

@@ -2,8 +2,6 @@
 
 
 #ifdef PACKED
-// This is an example where size of Packed struct is smaller then
-// the size of bit field type.
 #define P __attribute__((packed))
 #else
 #define P

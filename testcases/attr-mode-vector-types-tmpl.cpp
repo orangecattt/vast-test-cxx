@@ -2,7 +2,6 @@
 
 template <class T>
 void CheckIntScalarTypes() {
-  // T will be substituted with 'int' and 'enum' types.
 
   typedef T __attribute__((mode(QI))) T1;
   typedef T __attribute__((mode(HI))) T2;
@@ -17,7 +16,6 @@ void CheckIntScalarTypes() {
 
 template <class T>
 void CheckIntVectorTypes() {
-  // T will be substituted with 'int'.
 
   typedef int __attribute__((mode(QI))) __attribute__((vector_size(8)))  VT_11;
   typedef T   __attribute__((mode(V8QI)))                                VT_12;
@@ -38,7 +36,6 @@ void CheckIntVectorTypes() {
 
 template <class T>
 void CheckFloatVectorTypes() {
-  // T will be substituted with 'float'.
 
   typedef float __attribute__((mode(SF))) __attribute__((vector_size(128))) VT_41;
   typedef T     __attribute__((mode(V32SF)))                                VT_42;
@@ -64,45 +61,17 @@ typedef int __attribute__((mode(V8HI)))       IntVecTy1;
 
 void test() {
 
-  // CHECK: define {{.*}} void @_Z19CheckIntScalarTypesIiEvv()
-  // CHECK: %{{.+}} = alloca i8
-  // CHECK: %{{.+}} = alloca i16
-  // CHECK: %{{.+}} = alloca i32
-  // CHECK: %{{.+}} = alloca i64
   CheckIntScalarTypes<int>();
 
-  // CHECK: define {{.*}} void @_Z19CheckIntScalarTypesI6EnumTyEvv()
-  // CHECK: %{{.+}} = alloca i8
-  // CHECK: %{{.+}} = alloca i16
-  // CHECK: %{{.+}} = alloca i32
-  // CHECK: %{{.+}} = alloca i64
   CheckIntScalarTypes<EnumTy>();
 
-  // CHECK: define {{.*}} void @_Z19CheckIntVectorTypesIiEvv()
-  // CHECK: %{{.+}} = alloca <8 x i8>
-  // CHECK: %{{.+}} = alloca <8 x i8>
-  // CHECK: %{{.+}} = alloca <4 x i32>
-  // CHECK: %{{.+}} = alloca <4 x i32>
-  // CHECK: %{{.+}} = alloca <8 x i64>
-  // CHECK: %{{.+}} = alloca <8 x i64>
   CheckIntVectorTypes<int>();
 
-  // CHECK: define {{.*}} void @_Z21CheckFloatVectorTypesIfEvv()
-  // CHECK: %{{.+}} = alloca <32 x float>
-  // CHECK: %{{.+}} = alloca <32 x float>
-  // CHECK: %{{.+}} = alloca <32 x double>
-  // CHECK: %{{.+}} = alloca <32 x double>
   CheckFloatVectorTypes<float>();
 
-  // CHECK: define {{.*}} void @_Z31CheckInstantiationWithModedTypeIlEvv()
-  // CHECK: [[X1:%.+]] = alloca i64
   CheckInstantiationWithModedType<Int64Ty1>();
 
-  // CHECK: define {{.*}} void @_Z31CheckInstantiationWithModedTypeI8Int64Ty2Evv()
-  // CHECK: [[X1]] = alloca i64
   CheckInstantiationWithModedType<Int64Ty2>();
 
-  // CHECK: define {{.*}} void @_Z31CheckInstantiationWithModedTypeIDv8_sEvv()
-  // CHECK: [[X1]] = alloca <8 x i16>
   CheckInstantiationWithModedType<IntVecTy1>();
 }

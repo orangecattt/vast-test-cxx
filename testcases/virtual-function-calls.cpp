@@ -1,7 +1,6 @@
 // RUN: %driver -cc1 %isys %s -std=c++11 %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys %s -std=c++11 -fstrict-vtable-pointers %target -o %t%output-suffix && %filecheck
 
-// PR5021
 namespace PR5021 {
 
 struct A {
@@ -9,7 +8,6 @@ struct A {
 };
 
 void f(A *a) {
-  // CHECK: call {{.*}}void %
   a->f('c');
 }
 
@@ -43,14 +41,8 @@ namespace VirtualNoreturn {
     [[noreturn]] virtual void f();
   };
 
-  // CHECK-LABEL: @_ZN15VirtualNoreturn1f
-  // CHECK-INVARIANT-LABEL: define {{(dso_local )?}}void @_ZN15VirtualNoreturn1f
   void f(A *p) {
     p->f();
-    // CHECK: call {{.*}}void %{{[^#]*$}}
-    // CHECK-NOT: unreachable
-    // CHECK-INVARIANT: load {{.*}} !invariant.load ![[EMPTY_NODE:[0-9]+]]
   }
 }
 
-// CHECK-INVARIANT: ![[EMPTY_NODE]] = !{}

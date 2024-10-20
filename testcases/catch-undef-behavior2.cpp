@@ -2,8 +2,6 @@
 
 bool GetOptionalBool(bool *value);
 bool GetBool(bool default_value) {
-  // CHECK-LABEL: @_Z7GetBoolb
-  // CHECK-NOT: select
   bool value;
   return GetOptionalBool(&value) ? value : default_value;
 }

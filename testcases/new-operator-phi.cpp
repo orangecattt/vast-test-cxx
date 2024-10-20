@@ -1,6 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// expected-no-diagnostics
-// PR5454
 #include <stddef.h>
 
 struct X {static void * operator new(size_t size) throw(); X(int); };

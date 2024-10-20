@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s -I%S %target -o %t%output-suffix && %filecheck
 
-// Check that we don't assert on this case.
 namespace Test1 {
 
 struct Incomplete;
@@ -60,7 +59,6 @@ static void f(B* b) {
 
 }
 
-// Test that we don't assert.
 namespace Test3 {
 
 struct A {

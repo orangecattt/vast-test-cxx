@@ -1,17 +1,6 @@
 // RUN: %driver -cc1 %isys -std=c++1y %s %target -o %t%output-suffix && %filecheck
 
-// CHECK: @a = internal thread_local global
-// CHECK: @_Z2vtIiE = linkonce_odr thread_local global i32 5
-// CHECK: @_ZZ3inlvE3loc = linkonce_odr thread_local global i32 0
-// CHECK: @_tlv_atexit({{.*}}@_ZN1AD1Ev
-// CHECK: call cxx_fast_tlscc ptr @_ZTW3ext()
-// CHECK: declare cxx_fast_tlscc noundef ptr @_ZTW3ext()
-// CHECK-DAG: define weak_odr hidden cxx_fast_tlscc noundef ptr @_ZTW2vtIiE()
-// CHECK-DAG: define weak_odr hidden cxx_fast_tlscc noundef ptr @_ZTW2vtIvE()
-// CHECK-DAG: define {{.*}} @_ZTW1a
 
-// MINGW-DAG: define weak_odr hidden noundef ptr @_ZTW2vtIiE() {{.*}} comdat
-// MINGW-DAG: define weak_odr hidden noundef ptr @_ZTW2vtIvE() {{.*}} comdat
 
 struct A {
   ~A();

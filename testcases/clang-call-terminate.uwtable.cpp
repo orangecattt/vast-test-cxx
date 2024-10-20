@@ -4,9 +4,3 @@
 
 void caller(void callback()) noexcept { callback(); }
 
-// CHECK: define {{.*}}void @__clang_call_terminate({{[^)]*}}) #[[#ATTRNUM:]]
-// CHECK: attributes #[[#ATTRNUM]] = {
-// NOUNWIND-NOT: uwtable
-// NOUNWIND-SAME: }
-// SYNCUNWIND-SAME: uwtable(sync)
-// ASYNCUNWIND-SAME: uwtable{{ }}

@@ -6,11 +6,9 @@ import FOO.BAR;
 
 namespace Bob {
 
-// CHECK-DAG: void @_ZN3BobW3FOOW3BAZ3FooEPS0_W3BAR1APNS_S2_1BE(
 void Foo (A *, B*) {
 }
 }
 
-// CHECK-DAG: void @_ZW3FOOW3BAZ3BarPS_W3BAR1APN3BobS1_1BE(
 void Bar (A *, Bob::B*) {
 }

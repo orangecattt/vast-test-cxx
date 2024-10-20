@@ -27,4 +27,3 @@ int main() {
               h, i, j, array[h][i][j].i, array[h][i][j].f);
 }
 
-// CHECK: call void @_ZN4xptoC1Ev

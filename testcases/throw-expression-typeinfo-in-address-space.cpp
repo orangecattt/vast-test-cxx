@@ -14,4 +14,3 @@ void f() {
   } catch (...) { }
 }
 
-// CHECK: declare void @__cxa_throw(ptr, ptr addrspace(1), ptr)

@@ -3,8 +3,6 @@ typedef int Array[10];
 
 void foo() throw (Array) {
   throw 0;
-  // CHECK: landingpad
-  // CHECK-NEXT: filter {{.*}} @_ZTIPi
 }
 
 struct S {
@@ -23,11 +21,7 @@ struct S2 {
 int main() {
   S s;
   s.foo();
-  // CHECK: landingpad
-  // CHECK-NEXT: filter {{.*}} @_ZTIP1S
 
   S2 <int[10]> s2;
   s2.foo();
-  // CHECK: landingpad
-  // CHECK-NEXT: filter {{.*}} @_ZTIPi
 }

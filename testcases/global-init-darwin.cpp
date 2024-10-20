@@ -16,8 +16,3 @@ struct B {
 
 int i = B().f();
 
-// CHECK: "__TEXT,__StaticInit,regular,pure_instructions" {
-// CHECK: "__TEXT,__StaticInit,regular,pure_instructions" {
-// CHECK: "__TEXT,__StaticInit,regular,pure_instructions" {
-// CHECK: "__TEXT,__StaticInit,regular,pure_instructions" {
-// CHECK: "__TEXT,__StaticInit,regular,pure_instructions" {

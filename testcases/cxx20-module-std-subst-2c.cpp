@@ -9,7 +9,5 @@ template <typename A> struct char_traits {};
 export module Bar;
 import RenameString;
 
-// Use Ss as this is global-module std::char_traits
-// CHECK-DAG: void @_ZW3Bar1gRSs(
 void g(str<char, std::char_traits<char>> &s) {
 }

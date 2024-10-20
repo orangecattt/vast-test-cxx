@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// PR5463
 extern "C" int printf(...);
 
 struct S {
@@ -25,7 +24,6 @@ int test1(void) {
         Foo a;
 }
 
-// PR7063
 
 
 struct Unit

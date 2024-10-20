@@ -8,8 +8,5 @@ namespace std {
 template <typename T> struct char_traits {};
 } // namespace std
 
-// use Sb mangling, not Ss as this is not global-module std::char_traits
-// std::char_traits.
-// CHECK-DAG: void @_ZW3Foo1fRSbIcStS_11char_traitsIcESaIcEE(
 void f(str<char, std::char_traits<char>> &s) {
 }

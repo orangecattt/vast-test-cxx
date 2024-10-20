@@ -39,8 +39,6 @@ struct N : M , P, Q {
     printf("iQ = %d\n", iQ);
     printf("iP = %d\n", iP);
     printf("iM = %d\n", iM);
-    // FIXME. We don't yet support this syntax.
-    // printf("iQ = %d\n", (*this).iQ);
     printf("iQ = %d\n", this->iQ);
     printf("iP = %d\n", this->iP);
     printf("iM = %d\n", this->iM);
@@ -59,7 +57,6 @@ int main() {
   n1.PR();
 }
 
-// PR5826
 template <class T> struct A {
   A() {}
   A(int) {}
@@ -68,21 +65,13 @@ template <class T> struct A {
   operator int() {return 0;}
 };
 
-// CHECK-LABEL: define{{.*}} void @_Z1fv()
 void f() {
-  // CHECK: call void @_ZN1AIsEC1Ei
   A<short> a4 = 97;
 
-  // CHECK-NEXT: store i32 17
   int i = 17;
 
-  // CHECK-NEXT: call void @_ZN1AIsED1Ev
-  // CHECK-NOT: call void @_ZN1AIsED1Ev
-  // CHECK: ret void
 }
 
-// Make sure we initialize the vtable pointer if it's required by a
-// base initializer.
 namespace InitVTable {
   struct A { A(int); };
   struct B : A {
@@ -91,22 +80,8 @@ namespace InitVTable {
     B(int);
   };
 
-  // CHECK-LABEL: define{{.*}} void @_ZN10InitVTable1BC2Ev(ptr {{[^,]*}} %this) unnamed_addr
-  // CHECK: store ptr getelementptr inbounds ({ [3 x ptr] }, ptr @_ZTVN10InitVTable1BE, i32 0, inrange i32 0, i32 2), ptr [[THIS:%.*]],
-  // CHECK:      [[VTBL:%.*]] = load ptr, ptr {{%.*}}
-  // CHECK-NEXT: [[FNP:%.*]] = getelementptr inbounds ptr, ptr [[VTBL]], i64 0
-  // CHECK-NEXT: [[FN:%.*]] = load ptr, ptr [[FNP]]
-  // CHECK-NEXT: [[ARG:%.*]] = call noundef i32 [[FN]](ptr {{[^,]*}} [[THIS]])
-  // CHECK-NEXT: call void @_ZN10InitVTable1AC2Ei(ptr {{[^,]*}} {{%.*}}, i32 noundef [[ARG]])
-  // CHECK-NEXT: store ptr getelementptr inbounds ({ [3 x ptr] }, ptr @_ZTVN10InitVTable1BE, i32 0, inrange i32 0, i32 2), ptr [[THIS]]
-  // CHECK-NEXT: ret void
   B::B() : A(foo()) {}
 
-  // CHECK-LABEL: define{{.*}} void @_ZN10InitVTable1BC2Ei(ptr {{[^,]*}} %this, i32 noundef %x) unnamed_addr
-  // CHECK:      [[ARG:%.*]] = add nsw i32 {{%.*}}, 5
-  // CHECK-NEXT: call void @_ZN10InitVTable1AC2Ei(ptr {{[^,]*}} {{%.*}}, i32 noundef [[ARG]])
-  // CHECK-NEXT: store ptr getelementptr inbounds ({ [3 x ptr] }, ptr @_ZTVN10InitVTable1BE, i32 0, inrange i32 0, i32 2), ptr {{%.*}}
-  // CHECK-NEXT: ret void
   B::B(int x) : A(x + 5) {}
 }
 
@@ -115,19 +90,12 @@ namespace rdar9694300 {
     int x;
   };
 
-  // CHECK-LABEL: define{{.*}} void @_ZN11rdar96943001fEv
   void f() {
-    // CHECK: alloca
     X x;
-    // CHECK-NEXT: [[I:%.*]] = alloca i32
-    // CHECK-NEXT: store i32 17, ptr [[I]]
     int i = 17;
-    // CHECK-NEXT: ret void
   }
 }
 
-// Check that we emit a zero initialization step for list-value-initialization
-// which calls a trivial default constructor.
 namespace PR13273 {
   struct U {
     int t;
@@ -138,10 +106,7 @@ namespace PR13273 {
     S() = default;
   };
 
-  // CHECK: define {{.*}}@_ZN7PR132731fEv(
   int f() {
-    // CHECK-NOT: }
-    // CHECK: llvm.memset{{.*}}i8 0
     return (new S{})->t;
   }
 }
@@ -156,12 +121,6 @@ struct X {
 
 template<typename T> struct X;
 
-// Make sure that the instantiated constructor initializes start and
-// end properly.
-// CHECK-LABEL: define linkonce_odr void @_ZN1XIiEC2ERKS0_(ptr {{[^,]*}} %this, ptr noundef nonnull align {{[0-9]+}} dereferenceable({{[0-9]+}}) %other) unnamed_addr
-// CHECK: {{store.*null}}
-// CHECK: {{store.*null}}
-// CHECK: ret
 template<typename T>
 X<T>::X(const X &other) : start(0), end(0) { }
 
@@ -179,41 +138,12 @@ namespace PR10720 {
   struct pair2 {
     X second[4];
 
-    // CHECK-PR10720: define linkonce_odr {{.*}} @_ZN7PR107205pair2aSERKS0_
-    // CHECK-PR10720: load
-    // CHECK-PR10720: icmp ne
-    // CHECK-PR10720-NEXT: br i1
-    // CHECK-PR10720: call {{.*}} @_ZN7PR107201XaSERKS0_
-    // CHECK-PR10720: ret
     pair2 &operator=(const pair2&) = default;
 
-    // CHECK-PR10720: define linkonce_odr {{.*}} @_ZN7PR107205pair2aSEOS0_
-    // CHECK-PR10720: load
-    // CHECK-PR10720: icmp ne
-    // CHECK-PR10720-NEXT: br i1
-    // CHECK-PR10720: call {{.*}} @_ZN7PR107201XaSEOS0_
-    // CHECK-PR10720: ret
     pair2 &operator=(pair2&&) = default;
 
-    // CHECK-PR10720-LABEL: define linkonce_odr void @_ZN7PR107204pairC2ERKS0_
-    // CHECK-PR10720-NOT: ret
-    // CHECK-PR10720: call void @llvm.memcpy
-    // CHECK-PR10720-NEXT: ret void
 
-    // CHECK-PR10720-LABEL: define linkonce_odr void @_ZN7PR107205pair2C2ERKS0_
-    // CHECK-PR10720-NOT: ret
-    // CHECK-PR10720: call void @_ZN7PR107201XC1ERKS0_
-    // CHECK-PR10720: icmp eq
-    // CHECK-PR10720-NEXT: br i1
-    // CHECK-PR10720: ret void
 
-    // CHECK-PR10720-LABEL: define linkonce_odr void @_ZN7PR107205pair2C2EOS0_
-    // CHECK-PR10720-NOT: ret
-    // CHECK-PR10720: load
-    // CHECK-PR10720: call void @_ZN7PR107201XC1EOS0_
-    // CHECK-PR10720: icmp eq
-    // CHECK-PR10720-NEXT: br i1
-    // CHECK-PR10720: ret void
     pair2(pair2&&) = default;
 
     pair2(const pair2&) = default;

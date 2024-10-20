@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s -fblocks %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys %s -fno-rtti -fblocks %target -o %t%output-suffix && %filecheck
-// Just test that this doesn't crash the compiler...
 
 void func(void*);
 

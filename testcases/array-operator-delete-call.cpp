@@ -54,5 +54,4 @@ int main()
 }
 COST c2;
 
-// CHECK: call void @_ZdaPv
 

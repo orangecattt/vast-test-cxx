@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR954
 
 struct _Refcount_Base   {
   unsigned long _M_ref_count;

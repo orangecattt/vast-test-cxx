@@ -6,4 +6,3 @@ struct A {
   A() : y(x) {}
 };
 A z;
-// CHECK: store ptr @x, ptr

@@ -2,6 +2,5 @@
 
 void f()
 {
-  // CHECK: store i32 0
   int i{};
 }

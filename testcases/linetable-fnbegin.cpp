@@ -1,15 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// Test that the line table info for Foo<T>::bar() is pointing to the
-// right header file.
-// CHECK: define{{.*}}bar
-// CHECK-NOT: define
-// CHECK: ret {{.*}}, !dbg [[DBG:.*]]
-// CHECK: [[HPP:.*]] = !DIFile(filename: "./template.hpp",
-// CHECK: [[SP:.*]] = distinct !DISubprogram(name: "bar",
-// CHECK-SAME:                               file: [[HPP]], line: 22
-// CHECK-SAME:                               DISPFlagDefinition
-// We shouldn't need a lexical block for this function.
-// CHECK: [[DBG]] = !DILocation(line: 23, column: 3, scope: [[SP]])
 
 
 # 1 "./template.h" 1

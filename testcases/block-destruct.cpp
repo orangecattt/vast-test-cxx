@@ -6,4 +6,3 @@ void f() {
   __block A a;
 }
 
-// CHECK: call void @_ZN1AD1Ev

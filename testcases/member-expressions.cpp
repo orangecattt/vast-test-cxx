@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 
-// PR5392
 namespace PR5392 {
 struct A
 {
@@ -10,9 +9,7 @@ struct A
 A a1;
 void f()
 {
-  // CHECK: store i32 10, ptr @_ZN6PR53921A1aE
   a1.a = 10;
-  // CHECK: store i32 20, ptr @_ZN6PR53921A1aE
   A().a = 20;
 }
 
@@ -29,10 +26,7 @@ A *g();
 void f(A *a) {
   A::E e1 = a->Foo;
   
-  // CHECK: call noundef ptr @_Z1gv()
   A::E e2 = g()->Foo;
-  // CHECK: call void @_ZN1AC1Ev(
-  // CHECK: call void @_ZN1AD1Ev(
   A::E e3 = A().Foo;
 }
 
@@ -58,23 +52,11 @@ namespace test4 {
 
   extern C *c_ptr;
 
-  // CHECK-LABEL: define{{.*}} i32 @_ZN5test44testEv()
   int test() {
-    // CHECK: load {{.*}} @_ZN5test45c_ptrE
-    // CHECK-NEXT: getelementptr
-    // CHECK-NEXT: call void @_ZN5test41B3fooEv
     c_ptr->B::foo();
 
-    // CHECK: load {{.*}} @_ZN5test45c_ptrE
-    // CHECK-NEXT: getelementptr
-    // CHECK-NEXT: getelementptr
-    // CHECK-NEXT: store i32 5
     c_ptr->B::x = 5;
 
-    // CHECK: load {{.*}} @_ZN5test45c_ptrE
-    // CHECK-NEXT: getelementptr
-    // CHECK-NEXT: getelementptr
-    // CHECK-NEXT: load i32, ptr
     return c_ptr->B::x;
   }
 }

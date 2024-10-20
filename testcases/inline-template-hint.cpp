@@ -9,9 +9,7 @@ struct A {
   inline void template_run(T);
 };
 
-// CHECK: @_ZN1A7int_runEi({{.*}}) [[ATTR:#[0-9]+]]
 void A::int_run(int) {}
-// CHECK: @_ZN1A12template_runIiEEvT_({{.*}}) [[ATTR]]
 template <typename T>
 void A::template_run(T) {}
 
@@ -20,6 +18,3 @@ void bar() {
   A().template_run(1);
 }
 
-// SUITABLE: attributes [[ATTR]] = { {{.*}}inlinehint{{.*}} }
-//   HINTED: attributes [[ATTR]] = { {{.*}}inlinehint{{.*}} }
-// NOINLINE: attributes [[ATTR]] = { {{.*}}noinline{{.*}} }

@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// PR 7104
 
 struct A {
   int Ai;
@@ -23,7 +22,6 @@ void test()
   const char * str = g(&A::Ai);
 }
 
-// conversion of B::* to C::* is better than conversion of A::* to C::*
 typedef void (A::*pmfa)();
 typedef void (B::*pmfb)();
 typedef void (C::*pmfc)();

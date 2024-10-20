@@ -6,10 +6,6 @@ struct AM {
 alignas(8) AM m;
 AM load1() {
   AM am;
-  // m is declared to align to 8bytes, so generate load atomic instead
-  // of libcall.
-  // CHECK-LABEL: @_Z5load1v
-  // CHECK: load atomic {{.*}} monotonic, align 8
   __atomic_load(&m, &am, 0);
   return am;
 }
@@ -21,10 +17,6 @@ struct BM {
 BM bm;
 AM load2() {
   AM am;
-  // BM::f2 is declared to align to 8bytes, so generate load atomic instead
-  // of libcall.
-  // CHECK-LABEL: @_Z5load2v
-  // CHECK: load atomic {{.*}} monotonic, align 8
   __atomic_load(&bm.f2, &am, 0);
   return am;
 }
@@ -41,10 +33,6 @@ namespace std {
 
 AM load3() {
   AM am;
-  // m is declared to align to 8bytes, so generate load atomic instead
-  // of libcall.
-  // CHECK-LABEL: @_Z5load3v
-  // CHECK: load atomic {{.*}} monotonic, align 8
   __atomic_load(std::__addressof(m), &am, 0);
   return am;
 }

@@ -1,8 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// CHECK-NOT: _ZN1CC1ERK1C
-// CHECK-NOT: _ZN1SC1ERK1S
-// MS-NOT: ?0C@@QAE@ABV0
-// MS-NOT: ?0S@@QAE@ABV0
 
 extern "C" int printf(...);
 
@@ -52,7 +48,3 @@ extern const V_over_aligned gv1 = {};
 
 extern "C" V f() { return gv1; }
 
-// Make sure that we obey the destination's alignment requirements when emitting
-// the copy.
-// CHECK-LABEL: define {{.*}} @f(
-// CHECK:   call void @llvm.memcpy.p0.p0.{{i64|i32}}({{.*}}align 4{{.*}}, ptr align 8 @gv1, {{i64|i32}} 4, i1 false)

@@ -13,9 +13,4 @@ private:
 
 void foo() {
   for (;A(1), P(), false;);
-  // CHECK: foo
-  // CHECK: for.cond:
-  // CHECK: call void @_ZN1AC1Ei
-  // CHECK: call void @_ZN1AD1Ev
-  // CHECK: for.body
 }

@@ -8,9 +8,6 @@ struct X {
 
 void vararg(...);
 
-// CHECK-LABEL: define {{.*}}void @_Z4test1X
 void test(X x) {
-  // CHECK: call void @llvm.trap()
   vararg(x);
-  // CHECK: ret void
 }

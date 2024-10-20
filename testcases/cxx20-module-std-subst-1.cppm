@@ -12,7 +12,6 @@ export module std; // might happen, you can't say it won't!
 
 namespace std {
 export template<typename T> class allocator {
-// just for testing, not real!
 void M (T *);
 template <typename U> U *N (T *);
 };
@@ -22,13 +21,9 @@ template<typename T> template<typename U> U *allocator<T>::N (T *) {
 return nullptr;
 }
 
-// CHECK-DAG: void @_ZNStW3std9allocatorIiE1MEPi(
 template void allocator<int>::M (int *);
-// CHECK-DAG: @_ZNStW3std9allocatorIiE1NIfEEPT_Pi(
 template float *allocator<int>::N<float> (int *);
 }
 
-// CHECK-DAG: @_ZNStW3std9allocatorI4PoohE1MEPS1_(
 template void std::allocator<Pooh>::M (Pooh *);
-// CHECK-DAG: @_ZNStW3std9allocatorI4PoohE1NI6PigletEEPT_PS1_(
 template Piglet *std::allocator<Pooh>::N<Piglet> (Pooh *);

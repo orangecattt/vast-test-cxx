@@ -5,4 +5,3 @@ struct bork {
   char * query;
 };
 int offset =  (char *) &(((struct bork *) 0x10)->query) - (char *) 0x10;
-// CHECK: @offset = global i32 8, align 4

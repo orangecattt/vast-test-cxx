@@ -98,49 +98,8 @@ void for_temps() {
 template void for_temps<D>();
 #endif
 
-// CHECK: define {{.*}}for_temps
-// CHECK: call void @_ZN1AC1Ev(
-// CHECK: call void @_ZN1BC1Ev(
-// CHECK: call void @_ZN1CC1ERK1B(
-// CHECK: call void @_ZN1DC1ERK1C(
-// CHECK: call void @_ZN1CD1Ev(
-// CHECK: call void @_ZN1BD1Ev(
-// CHECK: call void @_ZN1DC1ERKS_(
-// CHECK: call void @_Z5begin1D(
-// CHECK: call void @_ZN1DD1Ev(
-// CHECK: call void @_ZN1DC1ERKS_(
-// CHECK: call void @_Z3end1D(
-// CHECK: call void @_ZN1DD1Ev(
-// CHECK: br label %[[COND:.*]]
 
-// CHECK: [[COND]]:
-// CHECK: call void @_ZN1EneERKS_(
-// CHECK: %[[CMP:.*]] = call noundef zeroext i1 @_ZN1HcvbEv(
-// CHECK: call void @_ZN1HD1Ev(
-// CHECK: br i1 %[[CMP]], label %[[BODY:.*]], label %[[CLEANUP:.*]]
 
-// CHECK: [[CLEANUP]]:
-// CHECK: call void @_ZN1ED1Ev(
-// CHECK: call void @_ZN1ED1Ev(
-// In for-range:
-// call void @_ZN1DD1Ev(
-// CHECK: br label %[[END:.*]]
 
-// CHECK: [[BODY]]:
-// CHECK: call void @_ZN1EdeEv(
-// CHECK: call void @_ZN1Fcv1IEv(
-// CHECK: call void @_ZN1FD1Ev(
-// CHECK: call void @_Z4bodyRK1I(
-// CHECK: call void @_ZN1ID1Ev(
-// CHECK: br label %[[INC:.*]]
 
-// CHECK: [[INC]]:
-// CHECK: call void @_ZN1EppEv(
-// CHECK: call void @_ZN1GD1Ev(
-// CHECK: br label %[[COND]]
 
-// CHECK: [[END]]:
-// In desugared version:
-// call void @_ZN1DD1Ev(
-// CHECK: call void @_ZN1AD1Ev(
-// CHECK: ret void

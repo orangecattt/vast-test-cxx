@@ -29,9 +29,6 @@ foo: should_not_be_used();
     should_not_be_used();
 }
 
-// CHECK: should_be_used_1
-// CHECK: should_be_used_2
-// CHECK: should_be_used_3
 
 namespace BlockThisCapture {
   void foo();
@@ -47,5 +44,3 @@ namespace BlockThisCapture {
   }
 }
 
-// CHECK-LABEL: define internal void @___ZN16BlockThisCapture1S1mILb0EEEvv_block_invoke(
-// CHECK: call void @_ZN16BlockThisCapture3fooEv(

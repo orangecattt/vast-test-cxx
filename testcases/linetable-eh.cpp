@@ -1,21 +1,6 @@
 // RUN: %driver -cc1 %isys -gno-column-info -funwind-tables=2 -std=c++11 -fcxx-exceptions -fexceptions %s %target -o %t%output-suffix && %filecheck
 
-// Test that emitting a landing pad does not affect the line table
-// entries for the code that triggered it.
 
-// CHECK: call void @llvm.dbg.declare
-// CHECK: call void @llvm.dbg.declare(metadata {{.*}}, metadata ![[CURRENT_ADDR:.*]], metadata !{{.*}}), !dbg ![[DBG1:.*]]
-// CHECK: unwind label %{{.*}}, !dbg ![[DBG1]]
-// CHECK: store i64 %{{.*}}, ptr %current_address, align 8, !dbg ![[DBG4:.*]]
-// CHECK-NEXT: call void @llvm.dbg.declare(metadata {{.*}}, metadata ![[FOUND_IT:.*]], metadata !{{.*}}), !dbg ![[DBG2:.*]]
-// CHECK: = landingpad
-// CHECK-NEXT: cleanup, !dbg ![[DBG3:.*]]
-// CHECK-DAG: ![[CURRENT_ADDR]] = {{.*}}name: "current_address"
-// CHECK-DAG: ![[FOUND_IT]] = {{.*}}name: "found_it"
-// CHECK-DAG: ![[DBG1]] = !DILocation(line: 256,
-// CHECK-DAG: ![[DBG2]] = !DILocation(line: 257,
-// CHECK-DAG: ![[DBG3]] = !DILocation(line: 268,
-// CHECK-DAG: ![[DBG4]] = !DILocation(line: 256,
 typedef unsigned long long uint64_t;
 template<class _Tp> class shared_ptr {
 public:

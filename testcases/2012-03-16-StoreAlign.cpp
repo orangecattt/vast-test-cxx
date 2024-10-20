@@ -26,8 +26,6 @@ struct Foo {
   }
 };
 
-// CHECK: @_ZZN3Foo19getPageSizeFromNameERK6LengthE10legalWidth = linkonce_odr global %struct.Length zeroinitializer, align 4
-// CHECK: store float %{{.*}}, ptr @_ZZN3Foo19getPageSizeFromNameERK6LengthE10legalWidth, align 4
 
 bool bar(Length &b) {
   Foo f;

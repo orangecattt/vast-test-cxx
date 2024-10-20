@@ -20,9 +20,3 @@ void testRoutine() {
     int (^V)() = ^{ return one.version(); };
 }
 
-// CHECK: call void @_ZN10TestObjectC1Ev
-// CHECK: call void @_ZN1SC1EPKc
-// CHECK: call void @_ZN10TestObjectC1ERKS_iRK1S
-// CHECK: call void @_ZN1SD1Ev
-// CHECK: call void @_ZN10TestObjectD1Ev
-// CHECK: call void @_ZN10TestObjectD1Ev

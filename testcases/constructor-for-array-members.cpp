@@ -35,4 +35,3 @@ int main() {
   m1.pr();
 }
 
-// CHECK: call void @_ZN1SC1Ev

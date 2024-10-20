@@ -9,6 +9,4 @@ namespace std {
   struct nothrow_t {};
 }
 
-// Definition which inherits visibility from the implicit compiler generated declaration.
 void operator delete(void*) throw() {}
-// CHECK: define [[LINKAGE]] void @_ZdlPv

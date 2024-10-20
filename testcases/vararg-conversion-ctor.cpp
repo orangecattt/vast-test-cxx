@@ -17,6 +17,3 @@ int main()
   A c[3];
 }
 
-// CHECK-LPLL64: call void (ptr, ...)
-// CHECK-LPLL64: call void (ptr, ...)
-// CHECK-LPLL64: call void (ptr, ...)

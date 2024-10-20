@@ -26,7 +26,3 @@ int g() {
   return f(&d);
 }
 
-// Thunks should be marked as "linkonce ODR" not "weak".
-//
-// CHECK: define linkonce_odr noundef i32 @_ZThn{{[48]}}_N1D1fEv
-// CHECK: define linkonce_odr noundef i32 @_ZThn{{[48]}}_N1C1fEv

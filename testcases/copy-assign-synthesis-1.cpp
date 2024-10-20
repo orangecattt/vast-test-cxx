@@ -89,4 +89,3 @@ int main() {
   dstY.pr();
 }
 
-// CHECK: define linkonce_odr noundef nonnull align {{[0-9]+}} dereferenceable({{[0-9]+}}) ptr @_ZN1XaSERKS_

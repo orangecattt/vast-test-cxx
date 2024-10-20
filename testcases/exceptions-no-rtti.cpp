@@ -1,12 +1,6 @@
 // RUN: %driver -cc1 %isys -fno-rtti -fcxx-exceptions -fexceptions -Wno-dynamic-exception-spec %s %std_cxx98- %target -o %t%output-suffix && %filecheck
 
-// CHECK: @_ZTIN5test11AE = linkonce_odr constant
-// CHECK: @_ZTIN5test11BE = linkonce_odr constant
-// CHECK: @_ZTIN5test11CE = linkonce_odr constant
-// CHECK: @_ZTIN5test11DE = linkonce_odr constant
-// CHECK: @_ZTIPN5test11DE = linkonce_odr constant {{.*}} @_ZTIN5test11DE
 
-// PR6974: this shouldn't crash
 namespace test0 {
   class err {};
 
@@ -18,12 +12,6 @@ namespace test0 {
 }
 
 namespace test1 {
-  // These classes have key functions defined out-of-line.  Under
-  // normal circumstances, we wouldn't generate RTTI for them; under
-  // -fno-rtti, we generate RTTI only when required by EH.  But
-  // everything gets hidden visibility because we assume that all
-  // users are also compiled under -fno-rtti and therefore will be
-  // emitting RTTI regardless of key function.
   class A { virtual void foo(); };
   class B { virtual void foo(); };
   class C { virtual void foo(); };

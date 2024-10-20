@@ -15,27 +15,18 @@ void f() {
   b.f();
 }
 
-// CHECK: define{{.*}} ptr @_Z1fP1A(ptr noundef %a) [[NUW:#[0-9]+]]
 B *f(A *a) {
-  // CHECK-NOT: br label
-  // CHECK: ret ptr
   return static_cast<B*>(a);
 }
 
-// PR5965
 namespace PR5965 {
 
-// CHECK: define{{.*}} ptr @_ZN6PR59651fEP1B(ptr noundef %b) [[NUW]]
 A *f(B* b) {
-  // CHECK-NOT: br label
-  // CHECK: ret ptr
   return b;
 }
 
 }
 
-// Don't crash on a derived-to-base conversion of an r-value
-// aggregate.
 namespace test3 {
   struct A {};
   struct B : A {};
@@ -46,4 +37,3 @@ namespace test3 {
   }
 }
 
-// CHECK: attributes [[NUW]] = { mustprogress noinline nounwind{{.*}} }

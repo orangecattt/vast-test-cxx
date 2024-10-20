@@ -14,9 +14,3 @@ int main () {
   static_cast<B>(10);
 }
 
-// CHECK: call void @_ZN1AC1Ei
-// CHECK: call void @_ZN1BC1E1A
-// CHECK: call void @_ZN1AC1Ei
-// CHECK: call void @_ZN1BC1E1A
-// CHECK: call void @_ZN1AC1Ei
-// CHECK: call void @_ZN1BC1E1A

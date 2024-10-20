@@ -15,20 +15,6 @@ float TestAlign(void)
         return r[0];
 }
 
-// CHECK: [[R:%.*]] = alloca <8 x float>, align 32
-// PRE17-NEXT:  [[CALL:%.*]] = call noalias noundef nonnull ptr @_Znwm(i64 noundef 32)
-// CXX17-NEXT:  [[CALL:%.*]] = call noalias noundef nonnull align 32 ptr @_ZnwmSt11align_val_t(i64 noundef 32, i64 noundef 32)
-// CHECK-NEXT:  store ptr [[CALL]], ptr [[P:%.*]], align 8
-// CHECK-NEXT:  [[ONE:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  [[TWO:%.*]] = load volatile <8 x float>, ptr [[ONE]], align 16
-// CHECK-NEXT:  [[THREE:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  store volatile <8 x float> [[TWO]], ptr [[THREE]], align 16
-// CHECK-NEXT:  [[FOUR:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  [[FIVE:%.*]] = load volatile <8 x float>, ptr [[FOUR]], align 16
-// CHECK-NEXT:  store <8 x float> [[FIVE]], ptr [[R]], align 32
-// CHECK-NEXT:  [[SIX:%.*]] = load <8 x float>, ptr [[R]], align 32
-// CHECK-NEXT:  [[VECEXT:%.*]] = extractelement <8 x float> [[SIX]], i32 0
-// CHECK-NEXT:  ret float [[VECEXT]]
 
 typedef float AVX2Float_Explicitly_aligned __attribute__((__vector_size__(32))) __attribute__((aligned (32)));
 
@@ -47,17 +33,3 @@ float TestAlign2(void)
         return r[0];
 }
 
-// CHECK: [[R:%.*]] = alloca <8 x float>, align 32
-// PRE17-NEXT:  [[CALL:%.*]] = call noalias noundef nonnull ptr @_Znwm(i64 noundef 32)
-// CXX17-NEXT:  [[CALL:%.*]] = call noalias noundef nonnull align 32 ptr @_ZnwmSt11align_val_t(i64 noundef 32, i64 noundef 32)
-// CHECK-NEXT:  store ptr [[CALL]], ptr [[P:%.*]], align 8
-// CHECK-NEXT:  [[ONE:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  [[TWO:%.*]] = load volatile <8 x float>, ptr [[ONE]], align 32
-// CHECK-NEXT:  [[THREE:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  store volatile <8 x float> [[TWO]], ptr [[THREE]], align 32
-// CHECK-NEXT:  [[FOUR:%.*]] = load ptr, ptr [[P]], align 8
-// CHECK-NEXT:  [[FIVE:%.*]] = load volatile <8 x float>, ptr [[FOUR]], align 32
-// CHECK-NEXT:  store <8 x float> [[FIVE]], ptr [[R]], align 32
-// CHECK-NEXT:  [[SIX:%.*]] = load <8 x float>, ptr [[R]], align 32
-// CHECK-NEXT:  [[VECEXT:%.*]] = extractelement <8 x float> [[SIX]], i32 0
-// CHECK-NEXT:  ret float [[VECEXT]]

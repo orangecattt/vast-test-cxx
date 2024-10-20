@@ -1,6 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// This used to crash under asan and valgrind.
-// PR12284
 
 template < typename _Tp > struct new_allocator
 {

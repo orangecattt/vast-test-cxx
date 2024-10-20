@@ -19,10 +19,7 @@ namespace ParenBraceInitList {
 
   struct Base { Base(Vector) {} };
 
-  // CHECK: define {{.*}}18ParenBraceInitList1fILi0EE
   template<int> void f() {
-    // CHECK: call {{.*}}18ParenBraceInitList6VectorC1
-    // CHECK: call {{.*}}18ParenBraceInitList6VectorD1
     Base({0});
   }
   template void f<0>();

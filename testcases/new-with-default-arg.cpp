@@ -1,5 +1,4 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// pr5547
 
 struct A {
   void* operator new(__typeof(sizeof(int)));
