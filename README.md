@@ -32,8 +32,8 @@ ctest
 
 #### 更改编译命令
 
-lit按照测试用例中的注释`// RUN:`指定的命令运行测试，为了更灵活地配置测试命令，其中可以包括可被替换为相应文本的替换符。lit有一些内置替换符，可参考[llvm lit](https://llvm.org/docs/CommandGuide/lit.html#substitutions)，也可以通过`lit.cfg.py`中的`config.substitutions.append()`自定义替换规则。其中`%driver`指定编译工具、`%target`指定生成目标、`%output-suffix`指定生成文件的后缀，**你需要将这些替换符指定为vast相关的命令行参数**。
+lit按照测试用例中的注释`// RUN: <command>`指定的命令运行测试，为了更灵活地配置测试命令，其中可以包括可被替换为相应文本的替换符。lit有一些内置替换符，可参考[llvm lit](https://llvm.org/docs/CommandGuide/lit.html#substitutions)，也可以通过`lit.cfg.py`中的`config.substitutions.append()`自定义替换规则。其中`%driver`指定编译工具、`%target`指定生成目标、`%output-suffix`指定生成文件的后缀，**你需要将这些替换符指定为vast相关的命令行参数**。
 
 #### 更改测试命令
 
-本测试集使用llvm FileCheck检查编译出的内容是否符合要求。FileCheck使用模板文件中的注释`// CHECK: <pattern>`、`// CHECK-NOT: <pattern>`等指定匹配模式用以匹配被检查的文件。通常将这些注释写在测试用例中，但为了使用替换符灵活指定匹配模式，本测试集使用一个临时文件指定测试注释（参考测试命令`%filecheck`的定义）。`%check`指定了匹配模式，目前对每个生成文件的检测都是相同的，仅保证其中不含`unsup.`和`unreach.`操作。如有补充，你可以修改`%filecheck`和`%check`。
+本测试集使用llvm FileCheck检查编译出的内容是否符合要求。FileCheck使用模板文件中的注释`// CHECK: <pattern>`、`// CHECK-NOT: <pattern>`等指定的匹配模式匹配被检查的文件。通常将这些注释写在测试用例中，但为了使用替换符灵活指定匹配模式，本测试集使用一个临时文件指定测试注释（参考测试命令`%filecheck`的定义）。`%check`指定了匹配模式，目前对每个生成文件的检测都是相同的，仅保证其中不含`unsup.`和`unreach.`操作。如有补充，你可以修改`%filecheck`和`%check`。
