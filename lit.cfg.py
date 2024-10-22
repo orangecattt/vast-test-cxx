@@ -17,7 +17,7 @@ config.excludes = ['Inputs', 'ignore']
 
 # FileCheck command and pattern, %check and %output-suffix used in %FILECHECK so they should defined after %FILECHECK
 config.substitutions.append((r'%filecheck', 'echo \'%check\' > %t.check && FileCheck %t.check --input-file=%t%output-suffix && rm %t.check'))
-config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.}}'))
+config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.|#unsup}}'))
 
 config.substitutions.append((r'%driver', 'clang'))
 config.substitutions.append((r'%target', '-emit-llvm'))
