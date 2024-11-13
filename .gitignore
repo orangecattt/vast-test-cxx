@@ -4,3 +4,4 @@ build/*
 collect/*
 testarg/*
 build-testcases.py
+collect-res.py

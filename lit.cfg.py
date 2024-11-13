@@ -19,13 +19,13 @@ config.excludes = ['Inputs', 'ignore']
 config.substitutions.append((r'%filecheck', 'echo \'%check\' > %t.check && FileCheck %t.check --input-file=%t%output-suffix && rm %t.check'))
 config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.|#unsup}}'))
 
-config.substitutions.append((r'%driver', 'clang'))
-config.substitutions.append((r'%target', '-emit-llvm'))
-config.substitutions.append((r'%output-suffix', '.ll'))
+# config.substitutions.append((r'%driver', 'clang'))
+# config.substitutions.append((r'%target', '-emit-llvm'))
+# config.substitutions.append((r'%output-suffix', '.ll'))
 
-# config.substitutions.append((r'%driver', 'vast-front'))
-# config.substitutions.append((r'%target', '-vast-emit-mlir=hl'))
-# config.substitutions.append((r'%output-suffix', '.hl'))
+config.substitutions.append((r'%driver', 'vast-front'))
+config.substitutions.append((r'%target', '-vast-emit-mlir=hl'))
+config.substitutions.append((r'%output-suffix', '.hl'))
 
 # clang -cc1 is the frontend, clang is the driver. The driver invokes the frontend with options appropriate for your system
 # find clang SYSTEM include search path

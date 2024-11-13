@@ -48,7 +48,7 @@ namespace test2 {
     };
   };
   namespace {
-    struct C;
+    struct C{};
   }
 
   void test() {
