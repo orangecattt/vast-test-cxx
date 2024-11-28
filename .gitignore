@@ -1,7 +1,7 @@
 build/*
+config
 
 # for test
-collect/*
-testarg/*
 build-testcases.py
 collect-res.py
+C++翻译进度.xlsx
