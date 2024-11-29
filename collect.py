@@ -13,7 +13,7 @@ testcases : Dict[str, Tuple[str, List[str]]] = dict() # { testcase_name : (state
 cat_statistics : Dict[str, List[int]] = dict() # { category_name : [num_pass, num_all] }
 
 dir_not_cat = ["ignore", "Inputs"]
-categories = [dir for dir in os.listdir(testcase_dir) if os.path.isdir(os.path.join(testcase_dir, dir)) and not (dir in dir_not_cat)]
+categories = sorted([dir for dir in os.listdir(testcase_dir) if os.path.isdir(os.path.join(testcase_dir, dir)) and not (dir in dir_not_cat)])
 
 num_pass = 0
 num_fail = 0
