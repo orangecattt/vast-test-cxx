@@ -8,7 +8,7 @@ def main():
     force_mode = "-f" in sys.argv
     history_file_name = pwd + "/vast-test-cxx/test_history.json"
     result_file = open(pwd + "/tmp/msg.txt", "w")
-    result_file.write("CPP JUILET TEST RESULT:\n")
+    result_file.write("CPP EXAMPLE TEST RESULT:\n")
     trg = {"repo" : "origin",
             "branch" : "master"}
     stat = fetch.VastStatus(history_file_name, force_mode, trg, result_file)
