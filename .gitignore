@@ -5,3 +5,4 @@ config
 build-testcases.py
 collect-res.py
 C++翻译进度.xlsx
+test_history.json

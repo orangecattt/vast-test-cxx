@@ -8,7 +8,7 @@ SET(VAST_PATH "" CACHE STRING "path to vast")
 SET(LIT_PATH "" CACHE STRING "path to lit")
 SET(TESTCASE "." CACHE STRING "testcases to run, list of files or directories, relative path to 'testcases' directory")
 
-string(JOIN "/" LIT ${LIT_PATH} "lit")
+string(JOIN "/" LIT ${LIT_PATH} ${LIT_BIN_NAME})
 
 add_test(
     NAME vast-test-cxx

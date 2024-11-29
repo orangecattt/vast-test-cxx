@@ -1,2 +1,3 @@
 VAST_PATH="" # absolute path to vast-front
 LIT_PATH="" # absolute path to lits
+LIT_BIN_NAME="" # the name of llvm-lit executable

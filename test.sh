@@ -1,5 +1,5 @@
 #!/bin/zsh
-
+# chdir is required 
 # load config
 source config
 
@@ -14,7 +14,10 @@ if [[ ! -d ${BUILD_DIR} ]]; then
 fi
 cd ${BUILD_DIR}
 
-cmake .. -DVAST_PATH=${VAST_PATH} -DLIT_PATH=${LIT_PATH} &> /dev/null
+if [ -z ${LIT_BIN_NAME} ]; then
+    LIT_BIN_NAME='lit'
+fi
+cmake .. -DVAST_PATH=${VAST_PATH} -DLIT_PATH=${LIT_PATH} -DLIT_BIN_NAME=${LIT_BIN_NAME} &> /dev/null
 
 ctest &> /dev/null
 
