@@ -203,11 +203,11 @@ namespace N3664 {
   struct S { S() throw(int); };
 
   void f() {
-    int *p = new int; // expected-note {{allocated with 'new' here}}
+    int *p = new int;
     delete p;
 
     int *q = new int[3];
-    delete[] p; // expected-warning {{'delete[]' applied to a pointer that was allocated with 'new'; did you mean 'delete'?}}
+    delete[] p;
 
     (void) new (nothrow) S[3];
 

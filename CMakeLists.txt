@@ -6,6 +6,7 @@ configure_file(lit.site.cfg.py.in lit.site.cfg.py @ONLY)
 
 SET(VAST_PATH "" CACHE STRING "path to vast")
 SET(LIT_PATH "" CACHE STRING "path to lit")
+SET(LIT_BIN_NAME "lit" CACHE STRING "lit bin name")
 SET(TESTCASE "." CACHE STRING "testcases to run, list of files or directories, relative path to 'testcases' directory")
 
 string(JOIN "/" LIT ${LIT_PATH} ${LIT_BIN_NAME})
@@ -18,3 +19,4 @@ add_test(
 unset(TESTCASE CACHE)
 unset(VAST_PATH CACHE)
 unset(LIT_PATH CACHE)
+unset(LIT_BIN_NAME)
