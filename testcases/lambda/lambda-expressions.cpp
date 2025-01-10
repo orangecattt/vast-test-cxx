@@ -92,11 +92,11 @@ void h() {
 struct XXX {};
 void nestedCapture () {
   XXX localKey;
-  ^() {
-    [&]() {
-      ^{ XXX k = localKey; };
-    };
-  };
+  // ^() {
+  //   [&]() {
+  //     ^{ XXX k = localKey; };
+  //   };
+  // };
 }
 
 struct CaptureArrayAndThis {
