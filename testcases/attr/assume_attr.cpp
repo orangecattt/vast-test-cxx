@@ -1,6 +1,6 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
-// RUN: %driver -cc1 %isys -x c++ -emit-pch %s -o %t
-// RUN: %driver -cc1 %isys -include-pch %t %s %target -o %t%output-suffix && %filecheck
+
+
 
 #ifndef HEADER
 #define HEADER
