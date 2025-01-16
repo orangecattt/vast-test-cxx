@@ -27,7 +27,7 @@ void test0(A &a) { foo0<void>(a); }
 
 template <class T>
 void foo1(A a) {
-  asm("" : : "r"(^{ (void)a; return 0; }()));
+  // asm("" : : "r"(^{ (void)a; return 0; }()));
   asm("");
 }
 

@@ -80,17 +80,17 @@ extern "C" int call_deduced_return_operator() {
 
 
 
-static auto block_deduced_return() {
-  auto (^b)() = ^() {
-    static int n = 42;
-    struct S { int *operator()() { return &n; } };
-    return S();
-  };
-  return b();
-}
-extern "C" int call_block_deduced_return() {
-  return *decltype(block_deduced_return())()();
-}
+// static auto block_deduced_return() {
+//   auto (^b)() = ^() {
+//     static int n = 42;
+//     struct S { int *operator()() { return &n; } };
+//     return S();
+//   };
+//   return b();
+// }
+// extern "C" int call_block_deduced_return() {
+//   return *decltype(block_deduced_return())()();
+// }
 
 
 

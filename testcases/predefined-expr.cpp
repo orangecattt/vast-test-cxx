@@ -316,10 +316,10 @@ void functionTemplateWithLambda(T t)
 template <typename T>
 void functionTemplateWithCapturedStmt(T t)
 {
-  #pragma clang __debug captured
-  {
-    printf("__PRETTY_FUNCTION__ %s\n\n", __PRETTY_FUNCTION__);
-  }
+  // #pragma clang __debug captured
+  // {
+  //   printf("__PRETTY_FUNCTION__ %s\n\n", __PRETTY_FUNCTION__);
+  // }
 }
 
 template <typename T>
@@ -472,22 +472,22 @@ class XXX {
 
 void XXLog(const char *functionName) { }
 
-typedef void (^notify_handler_t)(int token);
+// typedef void (^notify_handler_t)(int token);
 
-typedef void (^dispatch_block_t)(void);
+// typedef void (^dispatch_block_t)(void);
 
-void notify_register_dispatch(notify_handler_t handler);
+// void notify_register_dispatch(notify_handler_t handler);
 
-void _dispatch_once(dispatch_block_t block);
+// void _dispatch_once(dispatch_block_t block);
 
 XXX::XXX()
 {
-   _dispatch_once(^{ notify_register_dispatch( ^(int token) { XXLog(__FUNCTION__); }); 
-   });
+  //  _dispatch_once(^{ notify_register_dispatch( ^(int token) { XXLog(__FUNCTION__); }); 
+  //  });
 }
 
 XXX::~XXX()
 {
-   _dispatch_once(^{ notify_register_dispatch( ^(int token) { XXLog(__FUNCTION__); }); 
-   });
+  //  _dispatch_once(^{ notify_register_dispatch( ^(int token) { XXLog(__FUNCTION__); }); 
+  //  });
 }

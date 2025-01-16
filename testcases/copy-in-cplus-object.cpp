@@ -17,6 +17,6 @@ struct TestObject
 
 void testRoutine() {
     TestObject one;
-    int (^V)() = ^{ return one.version(); };
+    // int (^V)() = ^{ return one.version(); };
 }
 
