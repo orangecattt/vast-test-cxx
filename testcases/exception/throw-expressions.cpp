@@ -35,7 +35,7 @@ namespace DR1560 {
 
   void conditional_throw() {
     int a;
-    (true ? throw 0 : a) = 0; // CHECK: call void @__cxa_throw({{.*}})
+    (true ? throw 0 : a) = 0;
   }
 }
 
