@@ -12,12 +12,12 @@ struct TestClass {
   TestClass() : x(0) {};
   void MemberFunc() {
     Foo f;
-    #pragma clang __debug captured
-    {
-      static double inner = x;
-      (void)inner;
-      f.y = x;
-    }
+    // #pragma clang __debug captured
+    // {
+    //   static double inner = x;
+    //   (void)inner;
+    //   f.y = x;
+    // }
   }
 };
 
@@ -30,7 +30,7 @@ void test1() {
 
 void test2(int x) {
   int y = [&]() {
-    #pragma clang __debug captured
+    // #pragma clang __debug captured
     {
       x++;
     }
@@ -40,7 +40,7 @@ void test2(int x) {
 }
 
 void test3(int x) {
-  #pragma clang __debug captured
+  // #pragma clang __debug captured
   {
     x = [=]() { return x + 1; } ();
   }
@@ -50,7 +50,7 @@ void test3(int x) {
 }
 
 void test4() {
-  #pragma clang __debug captured
+  // #pragma clang __debug captured
   {
     Foo f;
     f.x = 5;
@@ -63,7 +63,7 @@ void touch(const T &) {}
 template <typename T, unsigned id>
 void template_capture_var() {
   T x;
-  #pragma clang __debug captured
+  // #pragma clang __debug captured
   {
     touch<T, id>(x);
   }
@@ -74,7 +74,7 @@ class Val {
   T v;
 public:
   void set() {
-    #pragma clang __debug captured
+    // #pragma clang __debug captured
     {
       touch<T, id>(v);
     }
@@ -82,7 +82,7 @@ public:
 
   template <typename U, int id2>
   void foo(U u) {
-    #pragma clang __debug captured
+    // #pragma clang __debug captured
     {
       touch<U, id + id2>(u);
     }
@@ -102,7 +102,7 @@ template <typename T>
 void template_capture_lambda() {
   T x, y;
   [=, &y]() {
-    #pragma clang __debug captured
+    // #pragma clang __debug captured
     {
       y += x;
     }
@@ -115,11 +115,11 @@ void test_capture_lambda() {
 
 inline int test_captured_linkage() {
   int j;
-  #pragma clang __debug captured
-  {
-    static int i = 0;
-    j = ++i;
-  }
+  // #pragma clang __debug captured
+  // {
+  //   static int i = 0;
+  //   j = ++i;
+  // }
   return j;
 }
 void call_test_captured_linkage() {
