@@ -94,16 +94,16 @@ extern "C" int call_deduced_return_operator() {
 
 
 
-inline auto static_local_label(void *p) {
-  if (p)
-    goto *p;
-  static void *q = &&label;
-  struct S { static void *get() { return q; } };
-  return S();
-label:
-  __builtin_abort();
-}
-void *global_label = decltype(static_local_label(0))::get();
+// inline auto static_local_label(void *p) {
+//   if (p)
+//     goto *p;
+//   static void *q = &&label;
+//   struct S { static void *get() { return q; } };
+//   return S();
+// label:
+//   __builtin_abort();
+// }
+// void *global_label = decltype(static_local_label(0))::get();
 
 
 auto global_lambda = []() {

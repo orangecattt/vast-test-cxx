@@ -2,7 +2,7 @@
 
 extern int aa __attribute__((section(".sdata")));
 
-extern int bb __attribute__((section(".sdata"))) /* = 1 */;
+extern int bb __attribute__((section(".sdata"))) = 1;
 
 int foo() {
   return aa + bb;
