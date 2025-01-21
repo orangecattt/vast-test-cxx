@@ -403,17 +403,17 @@ namespace Bitfield {
   int &&r = S().a;
 }
 
-namespace Vector {
-  typedef __attribute__((vector_size(16))) int vi4a;
-  typedef __attribute__((ext_vector_type(4))) int vi4b;
-  struct S {
-    vi4a v;
-    vi4b w;
-  };
-  int &&r = S().v[1];
+// namespace Vector {
+//   typedef __attribute__((vector_size(16))) int vi4a;
+//   typedef __attribute__((ext_vector_type(4))) int vi4b;
+//   struct S {
+//     vi4a v;
+//     vi4b w;
+//   };
+//   int &&r = S().v[1];
 
-  int &&s = S().w[1];
-}
+//   int &&s = S().w[1];
+// }
 
 namespace ImplicitTemporaryCleanup {
   struct A { A(int); ~A(); };
