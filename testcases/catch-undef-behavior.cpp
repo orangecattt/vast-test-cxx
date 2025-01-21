@@ -137,10 +137,10 @@ int incomplete_array_index(int n) {
   return incomplete[n];
 }
 
-typedef __attribute__((ext_vector_type(4))) int V4I;
-int vector_index(V4I v, int n) {
-  return v[n];
-}
+// typedef __attribute__((ext_vector_type(4))) int V4I;
+// int vector_index(V4I v, int n) {
+//   return v[n];
+// }
 
 char string_index(int n) {
   return "Hello"[n];
