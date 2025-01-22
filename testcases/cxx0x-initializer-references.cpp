@@ -4,19 +4,19 @@ const char (&extended_string_ref)[5] = {"hi"};
 
 const char (&nonextended_string_ref)[3] = {"hi"};
 
-// namespace reference {
-//   struct A {
-//     int i1, i2;
-//   };
+namespace reference {
+  struct A {
+    int i1, i2;
+  };
 
-//   void single_init() {
+  void single_init() {
 
-//     const int &cri2a = 1;
+    const int &cri2a = 1;
 
-//     const int &cri1a = {1};
+    const int &cri1a = {1};
 
-//     int i = 1;
-//     int &ri1a = {i};
+    int i = 1;
+    int &ri1a = {i};
 
 //     A a{1, 2};
 //     A &ra1a = {a};
@@ -24,23 +24,23 @@ const char (&nonextended_string_ref)[3] = {"hi"};
 //     using T = A&;
 //     A &ra1b = T{a};
 
-//   }
+  }
 
-//   void reference_to_aggregate(int i) {
-//     const A &ra1{1, i};
+  void reference_to_aggregate(int i) {
+    const A &ra1{1, i};
 
-//     const int (&arrayRef)[] = {1, 2, i};
+    const int (&arrayRef)[] = {1, 2, i};
 
-//     const A &constra1{1, 2};
+    const A &constra1{1, 2};
 
-//     const int (&constarrayRef)[] = {1, 2, 3};
+    const int (&constarrayRef)[] = {1, 2, 3};
 
-//   }
+  }
 
-//   struct B {
-//     B();
-//     ~B();
-//   };
+  struct B {
+    B();
+    ~B();
+  };
 
 //   void single_init_temp_cleanup()
 //   {
@@ -48,7 +48,7 @@ const char (&nonextended_string_ref)[3] = {"hi"};
 //     const B &rb{ B() };
 //   }
 
-// }
+}
 
 namespace PR23165 {
 struct AbstractClass {
