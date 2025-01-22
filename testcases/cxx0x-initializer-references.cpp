@@ -42,11 +42,11 @@ namespace reference {
     ~B();
   };
 
-//   void single_init_temp_cleanup()
-//   {
+  void single_init_temp_cleanup()
+  {
 
-//     const B &rb{ B() };
-//   }
+    const B &rb{ B() };
+  }
 
 }
 
