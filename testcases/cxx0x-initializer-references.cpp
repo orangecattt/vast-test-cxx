@@ -18,11 +18,11 @@ namespace reference {
     int i = 1;
     int &ri1a = {i};
 
-//     A a{1, 2};
-//     A &ra1a = {a};
+    A a{1, 2};
+    A &ra1a = {a};
 
-//     using T = A&;
-//     A &ra1b = T{a};
+    using T = A&;
+    A &ra1b = T{a};
 
   }
 
