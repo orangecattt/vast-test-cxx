@@ -53,7 +53,7 @@ __int128_t PR11705 = (__int128_t)&PR11705;
 
 void UnfoldableAddrLabelDiff() { static __int128_t x = (long)&&a-(long)&&b; a:b:return;}
 
-void FoldableAddrLabelDiff() { static long x = (long)&&a-(long)&&b; a:b:return;}
+// void FoldableAddrLabelDiff() { static long x = (long)&&a-(long)&&b; a:b:return;}
 
 int &i = reinterpret_cast<int&>(PR9558);
 
