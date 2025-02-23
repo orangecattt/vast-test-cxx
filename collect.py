@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import re
-import os
+import os, sys, argparse
 from typing import Dict, List, Tuple
 
 
@@ -57,8 +57,16 @@ for cat in categories:
         cat_statistics[cat][1] += 1
         unknown_all -= 1
 
-
-print(f"pass {num_pass}/{num_pass+num_fail}\n")
+parser = argparse.ArgumentParser(description="mld_test")
+parser.add_argument("--reportfile", 
+                    action="store", 
+                    help="the location to print results, for test automation")
+args = parser.parse_args()
+if args.reportfile:
+    fd = open(args.reportfile, "w")
+else:
+    fd = sys.stdout
+fd.write(f"pass {num_pass}/{num_pass+num_fail}\n\n")
 for cat, stat in cat_statistics.items():
-    print(f"{cat}: pass {stat[0]}/{stat[1]}")
-print(f"unknown: pass {unknown_pass}/{unknown_all}")
+    fd.write(f"{cat}: pass {stat[0]}/{stat[1]}\n")
+fd.write(f"unknown: pass {unknown_pass}/{unknown_all}\n")

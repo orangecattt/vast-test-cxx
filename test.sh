@@ -28,4 +28,4 @@ ctest &> /dev/null
 cd ..
 
 # collect test result
-./collect.py
+./collect.py $*
