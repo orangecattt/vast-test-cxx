@@ -1,9 +1,17 @@
 #!/bin/zsh
-# chdir is required 
-# load config
+
+# chdir
 cd "$(dirname "$(realpath "$0")")"
 
+# load config
 source config
+
+# parse args
+zparseopts -D - -vast-target:=vast_target
+vast_target="${vast_target##*[= ]}"
+if [[ -n ${vast_target} ]]; then
+    VAST_TARGET=${vast_target}
+fi
 
 # pull the latest commit
 git fetch &> /dev/null
