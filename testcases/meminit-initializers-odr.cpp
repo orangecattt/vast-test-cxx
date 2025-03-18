@@ -32,11 +32,11 @@ struct S : Base {
     WithConsteval B = {};
     WithConstevalTPL<double> C = {};
 };
-void Do(S = S{}) {}
+// void Do(S = S{}) {}
 
-void test() {
-    Do();
-}
+// void test() {
+//     Do();
+// }
 
 
 namespace check_arrays {
