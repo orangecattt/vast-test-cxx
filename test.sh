@@ -1,6 +1,8 @@
 #!/bin/zsh
 # chdir is required 
 # load config
+cd "$(dirname "$(realpath "$0")")"
+
 source config
 
 # pull the latest commit
