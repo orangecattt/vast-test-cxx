@@ -2,3 +2,4 @@ VAST_PATH="" # absolute path to vast-front
 LIT_PATH="" # absolute path to lits
 LIT_BIN_NAME="" # the name of llvm-lit executable
 TESTCASE="" # testcases to run(the format is described in README)
+VAST_TARGET="hl" # target ir, hl/ll/llvm

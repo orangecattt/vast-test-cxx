@@ -20,8 +20,11 @@ fi
 if [ -z ${TESTCASE} ]; then
     TESTCASE='.'
 fi
+if [ -z ${VAST_TARGET} ]; then
+    VAST_TARGET='hl'
+fi
 
-cmake .. -DVAST_PATH=${VAST_PATH} -DLIT_PATH=${LIT_PATH} -DLIT_BIN_NAME=${LIT_BIN_NAME} -DTESTCASE=${TESTCASE} &> /dev/null
+cmake .. -DVAST_PATH=${VAST_PATH} -DLIT_PATH=${LIT_PATH} -DLIT_BIN_NAME=${LIT_BIN_NAME} -DTESTCASE=${TESTCASE} -DVAST_TARGET=${VAST_TARGET} &> /dev/null
 
 ctest &> /dev/null
 

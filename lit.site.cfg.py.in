@@ -4,6 +4,7 @@ config.my_src_root = r"@CMAKE_SOURCE_DIR@"
 config.my_obj_root = r"@CMAKE_BINART_DIR@"
 
 config.vast_path = "@VAST_PATH@"
+config.vast_target = "@VAST_TARGET@"
 
 import lit.llvm
 lit.llvm.initialize(lit_config, config)
