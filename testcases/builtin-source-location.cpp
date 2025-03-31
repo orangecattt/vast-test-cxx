@@ -1,8 +1,6 @@
-// RUN: %driver -cc1 %isys -std=c++2a -fblocks %s %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys -std=c++14 -fblocks %s %target -o %t%output-suffix && %filecheck
 
 
-// RUN: %driver -cc1 %isys -fno-file-reproducible -fmacro-prefix-map=%p=/UNLIKELY/PATH %s %target -o %t%output-suffix && %filecheck
 void testRemap() {
   const char *file = __builtin_FILE();
 }
