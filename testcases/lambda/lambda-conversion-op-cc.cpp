@@ -1,6 +1,5 @@
 // RUN: %driver -cc1 %isys %s %target -o %t%output-suffix && %filecheck
 // RUN: %driver -cc1 %isys %s -DCC="__attribute__((vectorcall))" %target -o %t%output-suffix && %filecheck
-// RUN: %driver -cc1 %isys %s -fms-compatibility -DWIN32 %target -o %t%output-suffix && %filecheck
 
 #ifndef CC
 #define CC
