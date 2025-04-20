@@ -19,7 +19,7 @@ config.excludes = ['Inputs', 'ignore']
 config.substitutions.append((r'%filecheck', 'echo \'%check\' > %t.check && FileCheck %t.check --input-file=%t%output-suffix && rm %t.check'))
 config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.|#unsup}}'))
 
-config.substitutions.append((r'%driver', os.path.join(config.vast_path,'vast-front' )))
+config.substitutions.append((r'%driver', "timeout -k 0s 10s " + os.path.join(config.vast_path,'vast-front' )))
 config.substitutions.append((r'%target', '-vast-emit-mlir=' + config.vast_target))
 config.substitutions.append((r'%output-suffix', '.' + config.vast_target))
 
