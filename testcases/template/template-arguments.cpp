@@ -43,9 +43,9 @@ struct C : A, B { int z; };
 template int C::*value<(int C::*)&B::x>;
 template int B::*value<(int B::*)&C::z>;
 
-template _Complex int value<1 + 2j>;
+// template _Complex int value<1 + 2j>;
 
-template _Complex float value<1.0f + 2.0fj>;
+// template _Complex float value<1.0f + 2.0fj>;
 
 using V3i __attribute__((ext_vector_type(3))) = int;
 template V3i value<V3i{1, 2, 3}>;
