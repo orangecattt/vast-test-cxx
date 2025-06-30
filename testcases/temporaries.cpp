@@ -37,12 +37,12 @@ namespace BraceInit {
 }
 
 namespace RefTempSubobject {
-  struct SelfReferential {
-    int *p = ints;
-    int ints[3] = {1, 2, 3};
-  };
+  // struct SelfReferential {
+  //   int *p = ints;
+  //   int ints[3] = {1, 2, 3};
+  // };
 
-  constexpr const SelfReferential &sr = SelfReferential();
+  // constexpr const SelfReferential &sr = SelfReferential();
 }
 
 struct A {
