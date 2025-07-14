@@ -20,7 +20,7 @@ config.substitutions.append((r'%filecheck', 'echo \'%check\' > %t.check && FileC
 config.substitutions.append((r'%check', '// CHECK-NOT: {{unsup\.|unreach\.|#unsup}}'))
 
 config.substitutions.append((r'%driver', "timeout -k 0s 10s " + os.path.join(config.vast_path,'vast-front' )))
-config.substitutions.append((r'%target', '-vast-emit-mlir=' + config.vast_target))
+config.substitutions.append((r'%target', '-vast-emit-mlir=' + config.vast_target + " -fcxx-exceptions -fexceptions"))
 config.substitutions.append((r'%output-suffix', '.' + config.vast_target))
 
 # clang -cc1 is the frontend, clang is the driver. The driver invokes the frontend with options appropriate for your system
